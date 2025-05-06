@@ -1,0 +1,167 @@
+<app-breadcrumb></app-breadcrumb>
+
+<div class="row">
+  <div class="col-md-12 stretch-card">
+    <div class="card">
+      <div class="card-body">
+        <ul ngbNav #defaultNav="ngbNav" [(activeId)]="defaultNavActiveId" class="nav-tabs nav-fill mt-3">
+          <li [ngbNavItem]="1">
+            <a ngbNavLink>
+              <div class="d-flex flex-row flex-lg-column flex-xl-row align-items-center justify-content-center">
+                <i class="feather icon-user icon-xs me-sm-2 me-lg-0 me-xxl-2"></i>
+                <p class="d-none d-sm-block d-lg-none d-xxl-block">Personal Information</p>
+              </div>
+            </a>
+            <ng-template ngbNavContent>
+              <table class="table table-bordered table-striped w-100 mt-3">
+                <tbody>
+                  <tr>
+                    <td style="width: 50%;">ID/Code</td>
+                    <td style="width: 50%;">{{ currentRecord.code }}</td>
+                  </tr>
+                  <tr>
+                    <td style="width: 50%;">First Name</td>
+                    <td style="width: 50%;">{{ currentRecord.first_name }}</td>
+                  </tr>
+                  <tr>
+                    <td style="width: 50%;">Last Name</td>
+                    <td style="width: 50%;">{{ currentRecord.last_name }}</td>
+                  </tr>
+                  <tr>
+                    <td style="width: 50%;">Email Address</td>
+                    <td style="width: 50%;">{{ currentRecord.email ? currentRecord.email : 'N/A' }}</td>
+                  </tr>
+                  <tr>
+                    <td style="width: 50%;">Phone Number</td>
+                    <td style="width: 50%;">{{ currentRecord.phone_number ? currentRecord.phone_number : 'N/A' }}</td>
+                  </tr>
+                  <tr>
+                    <td style="width: 50%;">Gender</td>
+                    <td style="width: 50%;">{{ currentRecord.gender }}</td>
+                  </tr>
+                  <tr>
+                    <td style="width: 50%;">Date of Birth</td>
+                    <td style="width: 50%;">{{ currentRecord.date_of_birth }}</td>
+                  </tr>
+                  <tr>
+                    <td style="width: 50%;">City Name</td>
+                    <td style="width: 50%;">{{ currentRecord.city_name }}</td>
+                  </tr>
+                  <tr>
+                    <td style="width: 50%;">Employee Image</td>
+                    <td style="width: 50%;"><img src="{{ imagePreview }}" alt="{{ currentRecord.first_name }}"></td>
+                  </tr>
+                </tbody>
+              </table>
+            </ng-template>
+          </li>
+          <li [ngbNavItem]="2">
+            <a ngbNavLink>
+              <div class="d-flex flex-row flex-lg-column flex-xl-row align-items-center justify-content-center">
+                <i class="feather icon-user-check icon-xs me-sm-2 me-lg-0 me-xxl-2"></i>
+                <p class="d-none d-sm-block d-lg-none d-xxl-block">Company Information</p>
+              </div>
+            </a>
+            <ng-template ngbNavContent>
+              <table class="table table-bordered table-striped w-100 mt-3">
+                <tbody>
+                  <tr>
+                    <td style="width: 50%;">Joining Date</td>
+                    <td style="width: 50%;">{{ currentRecord.joining_date }}</td>
+                  </tr>
+                  <tr>
+                    <td style="width: 50%;">Resign Date</td>
+                    <td style="width: 50%;">{{ currentRecord.resign_date ? currentRecord.resign_date : 'N/A' }}</td>
+                  </tr>
+                  <tr>
+                    <td style="width: 50%;">Department Name</td>
+                    <td style="width: 50%;">{{ currentRecord.department_name }}</td>
+                  </tr>
+                  <tr>
+                    <td style="width: 50%;">Designation Name</td>
+                    <td style="width: 50%;">{{ currentRecord.designation_name }}</td>
+                  </tr>
+                  <tr>
+                    <td style="width: 50%;">Job Type</td>
+                    <td style="width: 50%;">{{ currentRecord.job_type_name }}</td>
+                  </tr>
+                </tbody>
+              </table>
+            </ng-template>
+          </li>
+          <li [ngbNavItem]="3">
+            <a ngbNavLink>
+              <div class="d-flex flex-row flex-lg-column flex-xl-row align-items-center justify-content-center">
+                <i class="feather icon-dollar-sign icon-xs me-sm-2 me-lg-0 me-xxl-2"></i>
+                <p class="d-none d-sm-block d-lg-none d-xxl-block">Salary Information</p>
+              </div>
+            </a>
+            <ng-template ngbNavContent>
+              <table class="table table-bordered table-striped w-100 mt-3">
+                <tbody>
+                  <tr>
+                    <td style="width: 50%;">Bank Name</td>
+                    <td style="width: 50%;">{{ currentRecord.bank_name }}</td>
+                  </tr>
+                  <tr>
+                    <td style="width: 50%;">Account Number</td>
+                    <td style="width: 50%;">{{ currentRecord.account_number }}</td>
+                  </tr>
+                  <tr>
+                    <td style="width: 50%;">Basic Salary</td>
+                    <td style="width: 50%;">{{ currentRecord.basic_salary }}</td>
+                  </tr>
+                  <tr>
+                    <td style="width: 50%;">House Rent</td>
+                    <td style="width: 50%;">{{ currentRecord.house_rent }}</td>
+                  </tr>
+                  <tr>
+                    <td style="width: 50%;">Medical Allowances</td>
+                    <td style="width: 50%;">{{ currentRecord.medical_allowances }}</td>
+                  </tr>
+                  <tr>
+                    <td style="width: 50%;">Transport Allowances</td>
+                    <td style="width: 50%;">{{ currentRecord.petrol_allowances }}</td>
+                  </tr>
+                  <tr>
+                    <td style="width: 50%;">Total Salary</td>
+                    <td style="width: 50%;">{{ currentRecord.total_salary }}</td>
+                  </tr>
+                </tbody>
+              </table>
+            </ng-template>
+          </li>
+          <li [ngbNavItem]="4">
+            <a ngbNavLink>
+              <div class="d-flex flex-row flex-lg-column flex-xl-row align-items-center justify-content-center">
+                <i class="feather icon-file icon-xs me-sm-2 me-lg-0 me-xxl-2"></i>
+                <p class="d-none d-sm-block d-lg-none d-xxl-block">Other Information</p>
+              </div>
+            </a>
+            <ng-template ngbNavContent>
+              <table class="table table-bordered table-striped w-100 mt-3">
+                <tbody>
+                  <tr>
+                    <td style="width: 50%;">Description</td>
+                    <td style="width: 50%;">{{ currentRecord.description }}</td>
+                  </tr>
+                  <tr>
+                    <td style="width: 50%;">Address</td>
+                    <td style="width: 50%;">{{ currentRecord.address }}</td>
+                  </tr>
+                  <tr>
+                    <td style="width: 50%;">Status</td>
+                    <td style="width: 50%;">{{ employee_status }}</td>
+                  </tr>
+                </tbody>
+              </table>
+            </ng-template>
+          </li>
+        </ul>
+        
+        <!-- Add this div to show the tab content -->
+        <div [ngbNavOutlet]="defaultNav" class="mt-2"></div>
+      </div>
+    </div>
+  </div>
+</div>

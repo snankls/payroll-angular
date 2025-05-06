@@ -1,0 +1,31 @@
+.action-btn {
+    width: 30px;
+    height: 30px;
+    line-height: 27px;
+    border-radius:50%;
+    color: #fff;
+    font-size: 12px;
+    display: inline-block;
+    padding:0;
+}
+
+label.form-label,
+.datatable-header-cell-label {
+    font-weight: 500;
+}
+
+[readonly] {
+    background-color: var(--bs-secondary-bg);
+    pointer-events: none;
+}
+
+.fc-disabled-day {
+    background-color: #f8f9fa !important;
+    opacity: 0.6;
+    pointer-events: none;
+}
+
+.fc-disabled-day a {
+    color: #adb5bd !important;
+}
+  

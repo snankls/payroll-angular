@@ -1,0 +1,88 @@
+import { NgStyle } from '@angular/common';
+import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
+import { ActivatedRoute, Router } from '@angular/router';
+import { HttpClient } from '@angular/common/http';
+import { FormsModule } from '@angular/forms';
+import { CommonModule } from '@angular/common';
+import { environment } from '../../../environments/environment';
+import { AuthService } from '../../../auth/auth.service';
+
+@Component({
+  selector: 'app-login',
+  standalone: true,
+  imports: [
+    NgStyle,
+    FormsModule,
+    CommonModule
+  ],
+  templateUrl: './login.component.html',
+})
+export class LoginComponent implements OnInit {
+  private API_URL = environment.API_URL;
+  
+  email: string = '';
+  password: string = '';
+  errorMessage: string = '';
+  loadingLogin: boolean = false;
+  messageLogin: string = '';
+
+  constructor(
+    private http: HttpClient,
+    private router: Router,
+    private authService: AuthService,
+    private cdr: ChangeDetectorRef
+  ) {}
+
+  ngOnInit(): void {}
+
+  onSubmit() {
+    this.loadingLogin = true;
+    this.messageLogin = '';
+    this.errorMessage = '';
+  
+    const formData = {
+      email: this.email,
+      password: this.password
+    };
+  
+    this.http.post(`${this.API_URL}/login`, formData).subscribe({
+      next: (response: any) => {
+        this.loadingLogin = false;
+  
+        if (response.data?.authorisation?.token) {
+          this.authService.setToken(response.data.authorisation.token);
+          localStorage.setItem('token', response.data.authorisation.token);
+  
+          this.messageLogin = 'Login successful!';
+  
+          setTimeout(() => {
+            this.router.navigate(['/dashboard']);
+          }, 500);
+        } else {
+          this.messageLogin = 'Login failed. Please try again.';
+        }
+      },
+      error: (error) => {
+        this.loadingLogin = false;
+        console.error('❌ Login error:', error);
+  
+        if (error.error?.message) {
+          this.messageLogin = error.error.message;
+        } else if (error.status === 401) {
+          this.messageLogin = 'Invalid email or password.';
+        } else if (error.status === 403) {
+          this.messageLogin = 'Your account is disabled. Contact support.';
+        } else if (error.status === 422) {
+          this.messageLogin = 'Validation failed. Please check your input.';
+        } else if (error.status === 500) {
+          this.messageLogin = 'Server error. Please try again later.';
+        } else {
+          this.messageLogin = 'An unexpected error occurred. Please try again.';
+        }
+  
+        this.cdr.detectChanges();
+      }
+    });
+  }
+
+}

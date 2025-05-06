@@ -1,0 +1,252 @@
+<app-breadcrumb></app-breadcrumb>
+
+<div class="row">
+  <div class="col-md-12 stretch-card">
+    <div class="card">
+      <div class="card-body">
+        <form class="forms-sample" (submit)="isEditMode ? updateRecord($event) : onSubmit($event)">
+          <input type="hidden" name="update_id" [(ngModel)]="currentRecord.id">
+          <div class="row">
+            <!-- Personal Information -->
+            <div class="col-md-3 mb-3">
+              <label class="form-label">Employee ID <span class="text-danger">*</span></label>
+              <input type="text" class="form-control" name="code" [(ngModel)]="currentRecord.code" (ngModelChange)="clearError('code')">
+              <div class="text-danger mt-1" *ngIf="formErrors.code">{{ formErrors.code[0] }}</div>
+            </div>
+        
+            <div class="col-md-3 mb-3">
+              <label class="form-label">First Name <span class="text-danger">*</span></label>
+              <input type="text" class="form-control" name="first_name" [(ngModel)]="currentRecord.first_name" (ngModelChange)="clearError('first_name')">
+              <div class="text-danger mt-1" *ngIf="formErrors.first_name">{{ formErrors.first_name[0] }}</div>
+            </div>
+        
+            <div class="col-md-3 mb-3">
+              <label class="form-label">Last Name <span class="text-danger">*</span></label>
+              <input type="text" class="form-control" name="last_name" [(ngModel)]="currentRecord.last_name" (ngModelChange)="clearError('last_name')">
+              <div class="text-danger mt-1" *ngIf="formErrors.last_name">{{ formErrors.last_name[0] }}</div>
+            </div>
+        
+            <div class="col-md-3 mb-3">
+              <label class="form-label">Email Address</label>
+              <input type="email" class="form-control" name="email" [(ngModel)]="currentRecord.email" (ngModelChange)="clearError('email')">
+              <div class="text-danger mt-1" *ngIf="formErrors.email">{{ formErrors.email[0] }}</div>
+            </div>
+        
+            <!-- Contact Information -->
+            <div class="col-md-3 mb-3">
+              <label class="form-label">Phone Number</label>
+              <input type="text" class="form-control" name="phone_number" [(ngModel)]="currentRecord.phone_number" (ngModelChange)="clearError('phone_number')">
+              <div class="text-danger mt-1" *ngIf="formErrors.phone_number">{{ formErrors.phone_number[0] }}</div>
+            </div>
+        
+            <div class="col-md-3 mb-3">
+              <label class="form-label">Gender <span class="text-danger">*</span></label>
+              <ng-select
+                [items]="gender"
+                bindLabel="name"
+                bindValue="id"
+                [(ngModel)]="currentRecord.gender"
+                name="gender"
+                placeholder="Select one"
+                [searchable]="false"
+                (change)="clearError('gender')">
+              </ng-select>
+              <div class="text-danger mt-1" *ngIf="formErrors.gender">{{ formErrors.gender[0] }}</div>
+            </div>
+        
+            <div class="col-md-3 mb-3">
+              <label class="form-label">Date of Birth <span class="text-danger">*</span></label>
+              <div class="input-group">
+                <input class="form-control" placeholder="yyyy-mm-dd" name="date_of_birth" ngbDatepicker #dob="ngbDatepicker" [(ngModel)]="currentRecord.date_of_birth" (ngModelChange)="clearError('date_of_birth')">
+                <button class="input-group-text" type="button" (click)="dob.toggle()">
+                  <i class="feather icon-calendar icon-md text-secondary"></i>
+                </button>
+              </div>
+              <div class="text-danger mt-1" *ngIf="formErrors.date_of_birth">{{ formErrors.date_of_birth[0] }}</div>
+            </div>
+            
+            <div class="col-md-3 mb-3">
+              <label class="form-label">Joining Date <span class="text-danger">*</span></label>
+              <div class="input-group">
+                <input class="form-control" placeholder="yyyy-mm-dd" name="joining_date" ngbDatepicker #join="ngbDatepicker" [(ngModel)]="currentRecord.joining_date" (ngModelChange)="clearError('joining_date')">
+                <button class="input-group-text" type="button" (click)="join.toggle()">
+                  <i class="feather icon-calendar icon-md text-secondary"></i>
+                </button>
+              </div>
+              <div class="text-danger mt-1" *ngIf="formErrors.joining_date">{{ formErrors.joining_date[0] }}</div>
+            </div>
+            
+            <div class="col-md-3 mb-3">
+              <label class="form-label">Resign Date</label>
+              <div class="input-group">
+                <input class="form-control" placeholder="yyyy-mm-dd" name="resign_date" ngbDatepicker #resign="ngbDatepicker" [(ngModel)]="currentRecord.resign_date" (ngModelChange)="clearError('resign_date')">
+                <button class="input-group-text" type="button" (click)="resign.toggle()">
+                  <i class="feather icon-calendar icon-md text-secondary"></i>
+                </button>
+              </div>
+              <div class="text-danger mt-1" *ngIf="formErrors.resign_date">{{ formErrors.resign_date[0] }}</div>
+            </div>
+        
+            <div class="col-md-3 mb-3">
+              <label class="form-label">Department <span class="text-danger">*</span></label>
+              <ng-select
+                [items]="departments"
+                bindLabel="department_label"
+                bindValue="id"
+                [(ngModel)]="currentRecord.department_id"
+                name="department_id"
+                placeholder="Select one"
+                [searchable]="true"
+                (change)="clearError('department_id')">
+              </ng-select>
+              <div class="text-danger mt-1" *ngIf="formErrors.department_id">{{ formErrors.department_id[0] }}</div>
+            </div>
+        
+            <div class="col-md-3 mb-3">
+              <label class="form-label">Designation <span class="text-danger">*</span></label>
+              <ng-select
+                [items]="designations"
+                bindLabel="designation_label"
+                bindValue="id"
+                [(ngModel)]="currentRecord.designation_id"
+                name="designation_id"
+                placeholder="Select one"
+                [searchable]="true"
+                (change)="clearError('designation_id')">
+              </ng-select>
+              <div class="text-danger mt-1" *ngIf="formErrors.designation_id">{{ formErrors.designation_id[0] }}</div>
+            </div>
+        
+            <div class="col-md-3 mb-3">
+              <label class="form-label">Job Type <span class="text-danger">*</span></label>
+              <ng-select
+                [items]="job_types"
+                bindLabel="name"
+                bindValue="id"
+                [(ngModel)]="currentRecord.job_type_id"
+                name="job_type_id"
+                placeholder="Select one"
+                [searchable]="true"
+                (change)="clearError('job_type_id')">
+              </ng-select>
+              <div class="text-danger mt-1" *ngIf="formErrors.job_type_id">{{ formErrors.job_type_id[0] }}</div>
+            </div>
+        
+            <!-- Location & Bank Details -->
+            <div class="col-md-3 mb-3">
+              <label class="form-label">City <span class="text-danger">*</span></label>
+              <ng-select
+                [items]="cities"
+                bindLabel="city_label"
+                bindValue="id"
+                [(ngModel)]="currentRecord.city_id"
+                name="city_id"
+                placeholder="Select one"
+                [searchable]="true"
+                (change)="clearError('city_id')">
+              </ng-select>
+              <div class="text-danger mt-1" *ngIf="formErrors.city_id">{{ formErrors.city_id[0] }}</div>
+            </div>
+        
+            <div class="col-md-3 mb-3">
+              <label class="form-label">Bank Account</label>
+              <ng-select
+                [items]="banks"
+                bindLabel="bank_label"
+                bindValue="id"
+                [(ngModel)]="currentRecord.bank_id"
+                name="bank_id"
+                placeholder="Select one"
+                [searchable]="true"
+                (change)="clearError('bank_id')">
+              </ng-select>
+              <div class="text-danger mt-1" *ngIf="formErrors.bank_id">{{ formErrors.bank_id[0] }}</div>
+            </div>
+        
+            <!-- Salary Information -->
+            <div class="col-md-3 mb-3">
+              <label class="form-label">Basic Salary <span class="text-danger">*</span></label>
+              <input type="number" class="form-control" [(ngModel)]="currentRecord.basic_salary" name="basic_salary" (change)="onSalaryChange()" (keyup)="onSalaryChange()" (ngModelChange)="clearError('basic_salary')">
+              <div class="text-danger mt-1" *ngIf="formErrors.basic_salary">{{ formErrors.basic_salary[0] }}</div>
+            </div>
+            
+            <div class="col-md-3 mb-3">
+              <label class="form-label">House Rent</label>
+              <input type="number" class="form-control" [(ngModel)]="currentRecord.house_rent" name="house_rent" (change)="onSalaryChange()" (keyup)="onSalaryChange()" (ngModelChange)="clearError('house_rent')">
+              <div class="text-danger mt-1" *ngIf="formErrors.house_rent">{{ formErrors.house_rent[0] }}</div>
+            </div>
+            
+            <div class="col-md-3 mb-3">
+              <label class="form-label">Medical Allowance</label>
+              <input type="number" class="form-control" [(ngModel)]="currentRecord.medical_allowances" name="medical_allowances" (change)="onSalaryChange()" (keyup)="onSalaryChange()" (ngModelChange)="clearError('medical_allowances')">
+              <div class="text-danger mt-1" *ngIf="formErrors.medical_allowances">{{ formErrors.medical_allowances[0] }}</div>
+            </div>
+            
+            <div class="col-md-3 mb-3">
+              <label class="form-label">Transport Allowance</label>
+              <input type="number" class="form-control" [(ngModel)]="currentRecord.petrol_allowances" name="petrol_allowances" (change)="onSalaryChange()" (keyup)="onSalaryChange()" (ngModelChange)="clearError('petrol_allowances')">
+              <div class="text-danger mt-1" *ngIf="formErrors.petrol_allowances">{{ formErrors.petrol_allowances[0] }}</div>
+            </div>
+        
+            <div class="col-md-3 mb-3">
+              <label class="form-label">Total Salary <span class="text-danger">*</span></label>
+              <input type="number" class="form-control" [(ngModel)]="currentRecord.total_salary" name="total_salary" [readonly]="true" (ngModelChange)="clearError('total_salary')">
+              <div class="text-danger mt-1" *ngIf="formErrors.total_salary">{{ formErrors.total_salary[0] }}</div>
+            </div>
+        
+            <div class="col-md-3 mb-3">
+              <label class="form-label">Status <span class="text-danger">*</span></label>
+              <ng-select
+                [items]="status"
+                bindLabel="name"
+                bindValue="id"
+                [(ngModel)]="currentRecord.status"
+                name="status"
+                placeholder="Select one"
+                [searchable]="false"
+                (change)="clearError('status')">
+              </ng-select>
+              <div class="text-danger mt-1" *ngIf="formErrors.status">{{ formErrors.status[0] }}</div>
+            </div>
+        
+            <!-- Additional Information -->
+            <div class="col-md-12 mb-3">
+              <label class="form-label">Address</label>
+              <textarea class="form-control" name="address" rows="3" [(ngModel)]="currentRecord.address" (ngModelChange)="clearError('address')"></textarea>
+              <div class="text-danger mt-1" *ngIf="formErrors.address">{{ formErrors.address[0] }}</div>
+            </div>
+        
+            <div class="col-md-12 mb-3">
+              <label class="form-label">Description</label>
+              <textarea class="form-control" name="description" rows="3" [(ngModel)]="currentRecord.description" (ngModelChange)="clearError('description')"></textarea>
+              <div class="text-danger mt-1" *ngIf="formErrors.description">{{ formErrors.description[0] }}</div>
+            </div>
+        
+            <!-- Image Upload -->
+            <div class="col-md-12 mb-3">
+              <label class="form-label">Upload Image</label>
+              <input type="file" class="form-control" (change)="onFileSelected($event)">
+              <div class="text-danger mt-1" *ngIf="formErrors.image">{{ formErrors.image[0] }}</div>
+
+              <!-- Image Preview -->
+              <div class="mt-3" *ngIf="imagePreview">
+                <img [src]="imagePreview" alt="Avtar" class="img-thumbnail" style="max-width: 150px;">
+              </div>
+            </div>
+        
+            <!-- Form Actions -->
+            <div class="col-12 mt-3">
+              <button type="submit" [disabled]="isLoading" class="btn btn-primary">Save Changing</button>
+            </div>
+
+            <div class="col-12 mt-3" *ngIf="globalErrorMessage">
+              <div class="alert alert-danger text-center">
+                {{ globalErrorMessage }}
+              </div>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>

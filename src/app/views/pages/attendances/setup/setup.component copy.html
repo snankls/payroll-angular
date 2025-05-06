@@ -1,0 +1,79 @@
+<app-breadcrumb></app-breadcrumb>
+
+<div class="row">
+  <div class="col-md-12 stretch-card">
+    <div class="card">
+      <div class="card-body">
+        <form class="forms-sample" (submit)="isEditMode ? updateRecord($event) : onSubmit($event)">
+          <input type="hidden" name="update_id" [(ngModel)]="currentRecord.id">
+          <div class="row">
+            <div class="col-md-3 mb-3">
+              <label class="form-label">Select Employee <span class="text-danger">*</span></label>
+              <ng-select
+                [items]="employees"
+                bindLabel="full_name"
+                bindValue="id"
+                [(ngModel)]="currentRecord.employee_id"
+                name="employee_id"
+                placeholder="Select one"
+                [searchable]="true"
+                (change)="onEmployeeChange($event)"
+                [ngModelOptions]="{standalone: false}">
+              </ng-select>
+              <div class="text-danger mt-1" *ngIf="formErrors.employee_id">
+                {{ formErrors.employee_id[0] }}
+              </div>
+            </div>
+            
+            <div class="col-md-12 mb-3">
+              <full-calendar [options]='calendarOptions'></full-calendar>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Modal for attendance -->
+<ng-template #attendanceModal let-modal>
+  <div class="modal-header">
+    <h5 class="modal-title">Add Attendance - {{ selectedDate | date:'mediumDate' }}</h5>
+    <button type="button" class="btn-close" aria-label="Close" (click)="modal.dismiss()"></button>
+  </div>
+  <div class="modal-body">
+    <form (ngSubmit)="saveAttendance(modal)">
+      <div class="mb-3">
+        <label class="form-label">Status <span class="text-danger">*</span></label>
+        <select class="form-select" [(ngModel)]="selectedStatus" name="status" required>
+          <option value="">Select status</option>
+          <option value="Present">Present</option>
+          <option value="Absent">Absent</option>
+          <option value="Leave">Leave</option>
+          <option value="Late">Late</option>
+          <option value="Half Day">Half Day</option>
+        </select>
+      </div>
+
+      <div class="mb-3">
+        <label class="form-label">Check-in Time <span class="text-danger">*</span></label>
+        <ngb-timepicker [(ngModel)]="checkInTime" name="checkInTime" [meridian]="true" required></ngb-timepicker>
+      </div>
+
+      <div class="mb-3">
+        <label class="form-label">Check-out Time</label>
+        <ngb-timepicker [(ngModel)]="checkOutTime" name="checkOutTime" [meridian]="true"></ngb-timepicker>
+      </div>
+
+      <div class="mb-3">
+        <label class="form-label">Duration</label>
+        <input type="text" class="form-control" [value]="duration" readonly>
+      </div>
+
+      <div class="modal-footer">
+        <button type="submit" class="btn btn-primary">Save</button>
+        <button type="button" class="btn btn-secondary" (click)="modal.dismiss()">Cancel</button>
+      </div>
+    </form>
+  </div>
+</ng-template>

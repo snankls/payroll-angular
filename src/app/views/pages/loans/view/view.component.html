@@ -1,0 +1,71 @@
+<app-breadcrumb></app-breadcrumb>
+
+<div class="row">
+  <div class="col-md-12 stretch-card">
+    <div class="card">
+      <div class="card-body">
+        <table class="table table-striped w-100 mt-3">
+          <tbody>
+            <tr>
+              <td style="width: 50%;">Employee Name</td>
+              <td style="width: 50%;">{{ currentRecord.employee_name }}</td>
+            </tr>
+            <tr>
+              <td style="width: 50%;">Loan Amount</td>
+              <td style="width: 50%;">{{ currentRecord.loan_amount | number }}</td>
+            </tr>
+            <tr>
+              <td style="width: 50%;">Paid Loan Amount</td>
+              <td style="width: 50%;">{{ currentRecord.paid_amount | number }}</td>
+            </tr>
+            <tr>
+              <td style="width: 50%;">Unpaid Loan Amount</td>
+              <td style="width: 50%;">{{ currentRecord.unpaid_amount | number }}</td>
+            </tr>
+            <tr>
+              <td style="width: 50%;">Remaining Loan Amount</td>
+              <td style="width: 50%;">{{ currentRecord.remaining_amount | number }}</td>
+            </tr>
+            <tr>
+              <td style="width: 50%;">Issue Date</td>
+              <td style="width: 50%;">{{ currentRecord.issue_date }}</td>
+            </tr>
+            <tr>
+              <td style="width: 50%;">Description</td>
+              <td style="width: 50%;">{{ currentRecord.description }}</td>
+            </tr>
+            <tr>
+              <td style="width: 50%;">Status</td>
+              <td style="width: 50%;">{{ currentRecord.status == 1 ? 'Active' : 'Inactive' }}</td>
+            </tr>
+          </tbody>
+        </table>
+
+        <h5 class="mt-5">Loan Installment Details</h5>
+        <table *ngIf="itemsList.length > 0" class="table table-bordered w-100 mt-3">
+          <thead>
+            <tr>
+              <th>Return Date</th>
+              <th>Return Amount</th>
+              <th>Status</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let item of itemsList; let i = index">
+              <td>{{ item.return_date }}</td>
+              <td>{{ item.return_amount | number }}</td>
+              <td>{{ item.return_status }}</td>
+            </tr>
+          </tbody>
+          <tfoot>
+            <tr>
+              <td><strong>Total</strong></td>
+              <td><strong>{{ getTotalReturnAmount() | number }}</strong></td>
+              <td></td>
+            </tr>
+          </tfoot>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
