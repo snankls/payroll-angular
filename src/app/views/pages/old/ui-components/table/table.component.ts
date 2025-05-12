@@ -1,5 +1,5 @@
 import { Component, Directive, EventEmitter, Input, OnInit, Output, PipeTransform, QueryList, ViewChildren } from '@angular/core';
-import { CodePreviewComponent } from '../../../../partials/code-preview/code-preview.component';
+import { CodePreviewComponent } from '../../partials/code-preview/code-preview.component';
 import { AsyncPipe, DecimalPipe } from '@angular/common';
 import { FormControl, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { NgbHighlight, NgbPaginationModule, NgbTypeaheadModule } from '@ng-bootstrap/ng-bootstrap';

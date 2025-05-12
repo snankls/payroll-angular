@@ -45,15 +45,15 @@
               </ng-template>
             </ngx-datatable-column>
             
-            <ngx-datatable-column name="Employee Name">
+            <ngx-datatable-column name="ID/Code">
               <ng-template ngx-datatable-cell-template let-row="row">
-                {{ row.employee_name }}
+                {{ row.code }}
               </ng-template>
             </ngx-datatable-column>
             
-            <ngx-datatable-column name="Issue Date">
+            <ngx-datatable-column name="Employee Name">
               <ng-template ngx-datatable-cell-template let-row="row">
-                {{ row.issue_date }}
+                {{ row.employee_name }}
               </ng-template>
             </ngx-datatable-column>
             
@@ -65,8 +65,8 @@
             
             <ngx-datatable-column name="Status">
               <ng-template ngx-datatable-cell-template let-row="row">
-                <span [ngClass]="row.status == 1 ? 'badge bg-success text-white' : 'badge bg-danger text-white'">
-                  {{ row.status == 1 ? 'Active' : 'Inactive' }}
+                <span [ngClass]="row.status == 'Active' ? 'badge bg-success text-white' : 'badge bg-danger text-white'">
+                  {{ row.status }}
                 </span>
               </ng-template>
             </ngx-datatable-column>
@@ -84,11 +84,11 @@
             <ngx-datatable-column name="Action" [sortable]="false">
               <ng-template ngx-datatable-cell-template let-row="row">
                 <span class="d-flex align-items-center">
-                  <a href="company-assets/view/{{ row.id }}" class="btn btn-primary me-1 action-btn">
+                  <a href="attendances/view/{{ row.id }}" class="btn btn-primary me-1 action-btn">
                     <i class="feather icon-eye"></i>
                   </a>
                   
-                  <a href="company-assets/edit/{{ row.id }}" class="btn btn-warning me-1 action-btn">
+                  <a href="attendances/edit/{{ row.id }}" class="btn btn-warning me-1 action-btn">
                     <i class="feather icon-edit"></i>
                   </a>
                 </span>

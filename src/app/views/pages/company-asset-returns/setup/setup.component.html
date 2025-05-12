@@ -7,18 +7,17 @@
         <form class="forms-sample" (submit)="isEditMode ? updateRecord($event) : onSubmit($event)">
           <input type="hidden" name="update_id" [(ngModel)]="currentRecord.id">
           <div class="row">
-            <!-- Personal Information -->
             <div class="col-md-3 mb-3">
               <label class="form-label">Select Employee <span class="text-danger">*</span></label>
               <ng-select
                 [items]="employees"
-                bindLabel="full_name"
+                bindLabel="employee_label"
                 bindValue="id"
                 [(ngModel)]="currentRecord.employee_id"
                 name="employee_id"
                 placeholder="Select one"
                 [searchable]="true"
-                (change)="clearError('employee_id')"
+                (change)="onEmployeeChange(); clearError('employee_id')"
                 [ngModelOptions]="{standalone: false}">
               </ng-select>
               <div class="text-danger mt-1" *ngIf="formErrors.employee_id">
@@ -75,6 +74,7 @@
                       </th>
                       <th>Item</th>
                       <th>Description</th>
+                      <th>Reason</th>
                     </tr>
                   </thead>
                   <tbody>
@@ -92,19 +92,28 @@
                         </td>
                         <td>
                           <ng-select
-                            [items]="asset_types"
-                            bindLabel="name"
-                            bindValue="id"
-                            [(ngModel)]="itemsList[i].asset_type_id"
-                            name="asset_type_id_{{ i }}"
-                            placeholder="Select One"
-                            [appendTo]="'body'"
-                            [ngModelOptions]="{ standalone: true }"
-                            (change)="clearItemError(i, 'asset_type_id')"
-                          ></ng-select>
-                          <div class="text-danger mt-1" *ngIf="formErrors['items.' + i + '.asset_type_id']">
-                            {{ formErrors['items.' + i + '.asset_type_id'][0] }}
-                          </div>
+    [items]="asset_types"
+    bindLabel="name"
+    bindValue="composite_id"
+    [(ngModel)]="itemsList[i].composite_id"
+    name="asset_type_id_{{ i }}"
+    placeholder="Select One"
+    [appendTo]="'body'"
+    [ngModelOptions]="{ standalone: true }"
+    (change)="onAssetTypeChange(itemsList[i], i)"
+    [compareWith]="compareWithFn"
+    [loading]="!asset_types?.length"
+    [clearable]="false">
+    <ng-template ng-label-tmp let-item="item">
+        {{ item?.name }} ({{ item?.description }})
+    </ng-template>
+    <ng-template ng-option-tmp let-item="item">
+        {{ item?.name }} ({{ item?.description }})
+        <span *ngIf="isAssetTypeUsed(item.composite_id, i)" class="text-muted">
+            (Already selected)
+        </span>
+    </ng-template>
+</ng-select>
                         </td>
                         <td>
                           <textarea
@@ -119,6 +128,19 @@
                             {{ formErrors['items.' + i + '.description'][0] }}
                           </div>
                         </td>
+                        <td>
+                          <textarea
+                            class="form-control"
+                            name="reason_{{ i }}"
+                            rows="2"
+                            [(ngModel)]="itemsList[i].reason"
+                            (ngModelChange)="clearItemError(i, 'reason')"
+                            [ngModelOptions]="{ standalone: true }"
+                          ></textarea>
+                          <div class="text-danger mt-1" *ngIf="formErrors['items.' + i + '.reason']">
+                            {{ formErrors['items.' + i + '.reason'][0] }}
+                          </div>
+                        </td>
                       </tr>
                     </ng-container>
                   </tbody>
@@ -131,7 +153,7 @@
                   <button class="btn btn-danger btn-xs" type="button" (click)="deleteSelectedRows()" [disabled]="selectedRows.length === 0">
                     Delete Selected
                   </button>
-                </div>                
+                </div>
               </div>
             </div>
         

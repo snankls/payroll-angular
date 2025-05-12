@@ -65,8 +65,8 @@
             
             <ngx-datatable-column name="Status">
               <ng-template ngx-datatable-cell-template let-row="row">
-                <span [ngClass]="row.status == 1 ? 'badge bg-success text-white' : 'badge bg-danger text-white'">
-                  {{ row.status == 1 ? 'Active' : 'Inactive' }}
+                <span [ngClass]="row.status == 'Active' ? 'badge bg-success text-white' : 'badge bg-danger text-white'">
+                  {{ row.status }}
                 </span>
               </ng-template>
             </ngx-datatable-column>

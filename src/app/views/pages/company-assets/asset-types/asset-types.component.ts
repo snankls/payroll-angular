@@ -106,9 +106,9 @@ export class AssetTypesComponent implements OnInit {
 
   fetchAssetTypes(): void {
     this.http.get<AssetTypes[]>(`${this.API_URL}/asset-types`).subscribe({
-      next: (data) => {
-        this.rows = data;
-        this.temp = [...data];
+      next: (response) => {
+        this.rows = response;
+        this.temp = [...response];
         this.loadingIndicator = false;
       },
       error: (error) => {

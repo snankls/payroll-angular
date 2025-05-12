@@ -29,3 +29,26 @@ label.form-label,
     color: #adb5bd !important;
 }
   
+.view-table tr td:first-child {
+    font-weight: 500;
+}
+
+.card-body-inner {
+    position: relative;
+    padding-left: 70px;
+}
+
+.dash-icon i {
+    display: inline-block;
+    font-size: 50px;
+    position: absolute;
+    left: 0;
+    top: 0;
+}
+
+[data-bs-theme=dark] .sidebar-header .logo-mini-wrapper .logo-mini.logo-mini-light {
+  display: none;
+}
+[data-bs-theme=light] .sidebar-header .logo-mini-wrapper .logo-mini.logo-mini-dark {
+  display: none;
+}

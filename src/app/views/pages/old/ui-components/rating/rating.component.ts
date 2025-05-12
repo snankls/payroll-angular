@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { CodePreviewComponent } from '../../../../partials/code-preview/code-preview.component';
+import { CodePreviewComponent } from '../../partials/code-preview/code-preview.component';
 import { NgbRatingModule } from '@ng-bootstrap/ng-bootstrap';
 import { FeatherIconDirective } from '../../../../../core/feather-icon/feather-icon.directive';
 

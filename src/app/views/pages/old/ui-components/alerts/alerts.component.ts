@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { NgbAlertModule } from '@ng-bootstrap/ng-bootstrap';
-import { CodePreviewComponent } from '../../../../partials/code-preview/code-preview.component';
+import { CodePreviewComponent } from '../../partials/code-preview/code-preview.component';
 
 const defaultAlert = {
   htmlCode: 

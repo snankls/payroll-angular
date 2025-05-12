@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { NgbProgressbarModule } from '@ng-bootstrap/ng-bootstrap';
-import { CodePreviewComponent } from '../../../../partials/code-preview/code-preview.component';
+import { CodePreviewComponent } from '../../partials/code-preview/code-preview.component';
 
 const defaultProgress = {
   htmlCode: 

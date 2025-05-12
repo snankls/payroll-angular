@@ -15,7 +15,7 @@ interface Employee {
   employee_id?: string | null;
   issue_date?: string | NgbDateStruct | null;
   loan_amount?: string | null;
-  status?: number | null;
+  status?: string | null;
   description?: string | null;
 }
 
@@ -55,7 +55,7 @@ export class LoansSetupComponent {
   formErrors: any = {};
   isAmountValid: boolean = false;
   employees: any[] = [];
-  status: { id: number; name: string }[] = [];
+  status: { id: string; name: string }[] = [];
   return_status: { id: string; name: string }[] = [];
   itemsList: any[] = [{
     id: null,
@@ -126,7 +126,8 @@ export class LoansSetupComponent {
       next: (response) => {
         // Map each employee to add a custom label
         this.employees = response.map((employee) => ({
-          ...employee
+          ...employee,
+          employee_label: `${employee.full_name} (${employee.code})`,
         }));
       },
       error: (error) => console.error('Failed to fetch employees:', error)
@@ -138,7 +139,7 @@ export class LoansSetupComponent {
       next: (response) => {
         this.status = Object.entries(response)
           .filter(([key]) => key !== '')
-          .map(([key, value]) => ({ id: Number(key), name: value as string }));
+          .map(([key, value]) => ({ id: String(key), name: value as string }));
       },
       error: (error) => console.error('Failed to fetch status:', error)
     });

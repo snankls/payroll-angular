@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { NgLabelTemplateDirective, NgOptionTemplateDirective, NgSelectComponent } from '@ng-select/ng-select';
 import { ContentChange, QuillModule, SelectionChange } from 'ngx-quill';
-import { PeoplesData } from '../../../../../../core/dummy-datas/peoples.data';
+import { PeoplesData } from '../../../dummy-datas/peoples.data';
 
 @Component({
   selector: 'app-compose',

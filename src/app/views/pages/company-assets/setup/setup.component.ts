@@ -9,7 +9,6 @@ import { BreadcrumbComponent } from '../../../layout/breadcrumb/breadcrumb.compo
 import { environment } from '../../../../environments/environment';
 import { NgSelectComponent as MyNgSelectComponent } from '@ng-select/ng-select';
 
-
 interface CompanyAsset {
   id?: number | null;
   employee_id: string | null;
@@ -106,7 +105,8 @@ export class CompanyAssetsSetupComponent {
       next: (response) => {
         // Map each employee to add a custom label
         this.employees = response.map((employee) => ({
-          ...employee
+          ...employee,
+          employee_label: `${employee.full_name} (${employee.code})`,
         }));
       },
       error: (error) => console.error('Failed to fetch employees:', error)

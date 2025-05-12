@@ -66,6 +66,12 @@
               </ng-template>
             </ngx-datatable-column>
             
+            <ngx-datatable-column name="Religions">
+              <ng-template ngx-datatable-cell-template let-row="row">
+                {{ row.religion }}
+              </ng-template>
+            </ngx-datatable-column>
+            
             <ngx-datatable-column name="Gender">
               <ng-template ngx-datatable-cell-template let-row="row">
                 {{ row.gender }}
@@ -110,10 +116,8 @@
             
             <ngx-datatable-column name="Status">
               <ng-template ngx-datatable-cell-template let-row="row">
-                <span
-                  [ngClass]="row.status === 1 ? 'badge bg-success text-white' : 'badge bg-danger text-white'"
-                >
-                  {{ row.status === 1 ? 'Active' : 'Inactive' }}
+                <span [ngClass]="row.status == 'Active' ? 'badge bg-success text-white' : 'badge bg-danger text-white'">
+                  {{ row.status }}
                 </span>
               </ng-template>
             </ngx-datatable-column>
@@ -131,11 +135,11 @@
             <ngx-datatable-column name="Action" [sortable]="false">
               <ng-template ngx-datatable-cell-template let-row="row">
                 <span class="d-flex align-items-center">
-                  <a href="employees/view/{{ row.slug }}" class="btn btn-primary me-1 action-btn">
+                  <a href="employees/view/{{ row.id }}" class="btn btn-primary me-1 action-btn">
                     <i class="feather icon-eye"></i>
                   </a>
                   
-                  <a href="employees/edit/{{ row.slug }}" class="btn btn-warning me-1 action-btn">
+                  <a href="employees/edit/{{ row.id }}" class="btn btn-warning me-1 action-btn">
                     <i class="feather icon-edit"></i>
                   </a>
                 </span>

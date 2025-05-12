@@ -13,43 +13,47 @@
               </div>
             </a>
             <ng-template ngbNavContent>
-              <table class="table table-bordered table-striped w-100 mt-3">
+              <table class="table table-hover view-table w-100 mt-3">
                 <tbody>
                   <tr>
-                    <td style="width: 50%;">ID/Code</td>
-                    <td style="width: 50%;">{{ currentRecord.code }}</td>
+                    <td style="width: 30%;">ID/Code</td>
+                    <td style="width: 70%;">{{ currentRecord.code }}</td>
                   </tr>
                   <tr>
-                    <td style="width: 50%;">First Name</td>
-                    <td style="width: 50%;">{{ currentRecord.first_name }}</td>
+                    <td>First Name</td>
+                    <td>{{ currentRecord.first_name }}</td>
                   </tr>
                   <tr>
-                    <td style="width: 50%;">Last Name</td>
-                    <td style="width: 50%;">{{ currentRecord.last_name }}</td>
+                    <td>Last Name</td>
+                    <td>{{ currentRecord.last_name }}</td>
                   </tr>
                   <tr>
-                    <td style="width: 50%;">Email Address</td>
-                    <td style="width: 50%;">{{ currentRecord.email ? currentRecord.email : 'N/A' }}</td>
+                    <td>Email Address</td>
+                    <td>{{ currentRecord.email ? currentRecord.email : 'N/A' }}</td>
                   </tr>
                   <tr>
-                    <td style="width: 50%;">Phone Number</td>
-                    <td style="width: 50%;">{{ currentRecord.phone_number ? currentRecord.phone_number : 'N/A' }}</td>
+                    <td>Phone Number</td>
+                    <td>{{ currentRecord.phone_number ? currentRecord.phone_number : 'N/A' }}</td>
                   </tr>
                   <tr>
-                    <td style="width: 50%;">Gender</td>
-                    <td style="width: 50%;">{{ currentRecord.gender }}</td>
+                    <td>Religion</td>
+                    <td>{{ currentRecord.religion ? currentRecord.religion : 'N/A' }}</td>
                   </tr>
                   <tr>
-                    <td style="width: 50%;">Date of Birth</td>
-                    <td style="width: 50%;">{{ currentRecord.date_of_birth }}</td>
+                    <td>Gender</td>
+                    <td>{{ currentRecord.gender }}</td>
                   </tr>
                   <tr>
-                    <td style="width: 50%;">City Name</td>
-                    <td style="width: 50%;">{{ currentRecord.city_name }}</td>
+                    <td>Date of Birth</td>
+                    <td>{{ currentRecord.date_of_birth }}</td>
                   </tr>
                   <tr>
-                    <td style="width: 50%;">Employee Image</td>
-                    <td style="width: 50%;"><img src="{{ imagePreview }}" alt="{{ currentRecord.first_name }}"></td>
+                    <td>City Name</td>
+                    <td>{{ currentRecord.city_name }}</td>
+                  </tr>
+                  <tr *ngIf="imagePreview">
+                    <td>Employee Image</td>
+                    <td><img src="{{ imagePreview }}" alt="{{ currentRecord.first_name }}" width="150"></td>
                   </tr>
                 </tbody>
               </table>
@@ -63,27 +67,27 @@
               </div>
             </a>
             <ng-template ngbNavContent>
-              <table class="table table-bordered table-striped w-100 mt-3">
+              <table class="table table-hover view-table w-100 mt-3">
                 <tbody>
                   <tr>
-                    <td style="width: 50%;">Joining Date</td>
-                    <td style="width: 50%;">{{ currentRecord.joining_date }}</td>
+                    <td style="width: 30%;">Joining Date</td>
+                    <td style="width: 70%;">{{ currentRecord.joining_date }}</td>
                   </tr>
                   <tr>
-                    <td style="width: 50%;">Resign Date</td>
-                    <td style="width: 50%;">{{ currentRecord.resign_date ? currentRecord.resign_date : 'N/A' }}</td>
+                    <td>Resign Date</td>
+                    <td>{{ currentRecord.resign_date ? currentRecord.resign_date : 'N/A' }}</td>
                   </tr>
                   <tr>
-                    <td style="width: 50%;">Department Name</td>
-                    <td style="width: 50%;">{{ currentRecord.department_name }}</td>
+                    <td>Department Name</td>
+                    <td>{{ currentRecord.department_name }}</td>
                   </tr>
                   <tr>
-                    <td style="width: 50%;">Designation Name</td>
-                    <td style="width: 50%;">{{ currentRecord.designation_name }}</td>
+                    <td>Designation Name</td>
+                    <td>{{ currentRecord.designation_name }}</td>
                   </tr>
                   <tr>
-                    <td style="width: 50%;">Job Type</td>
-                    <td style="width: 50%;">{{ currentRecord.job_type_name }}</td>
+                    <td>Job Type</td>
+                    <td>{{ currentRecord.job_type_name }}</td>
                   </tr>
                 </tbody>
               </table>
@@ -97,35 +101,35 @@
               </div>
             </a>
             <ng-template ngbNavContent>
-              <table class="table table-bordered table-striped w-100 mt-3">
+              <table class="table table-hover view-table w-100 mt-3">
                 <tbody>
                   <tr>
-                    <td style="width: 50%;">Bank Name</td>
-                    <td style="width: 50%;">{{ currentRecord.bank_name }}</td>
+                    <td style="width: 30%;">Bank Name</td>
+                    <td style="width: 70%;">{{ currentRecord.bank_name }}</td>
                   </tr>
                   <tr>
-                    <td style="width: 50%;">Account Number</td>
-                    <td style="width: 50%;">{{ currentRecord.account_number }}</td>
+                    <td>Account Number</td>
+                    <td>{{ currentRecord.account_number }}</td>
                   </tr>
                   <tr>
-                    <td style="width: 50%;">Basic Salary</td>
-                    <td style="width: 50%;">{{ currentRecord.basic_salary }}</td>
+                    <td>Basic Salary</td>
+                    <td>{{ currentRecord.basic_salary }}</td>
                   </tr>
                   <tr>
-                    <td style="width: 50%;">House Rent</td>
-                    <td style="width: 50%;">{{ currentRecord.house_rent }}</td>
+                    <td>House Rent</td>
+                    <td>{{ currentRecord.house_rent }}</td>
                   </tr>
                   <tr>
-                    <td style="width: 50%;">Medical Allowances</td>
-                    <td style="width: 50%;">{{ currentRecord.medical_allowances }}</td>
+                    <td>Medical Allowances</td>
+                    <td>{{ currentRecord.medical_allowances }}</td>
                   </tr>
                   <tr>
-                    <td style="width: 50%;">Transport Allowances</td>
-                    <td style="width: 50%;">{{ currentRecord.petrol_allowances }}</td>
+                    <td>Transport Allowances</td>
+                    <td>{{ currentRecord.petrol_allowances }}</td>
                   </tr>
                   <tr>
-                    <td style="width: 50%;">Total Salary</td>
-                    <td style="width: 50%;">{{ currentRecord.total_salary }}</td>
+                    <td>Total Salary</td>
+                    <td>{{ currentRecord.total_salary }}</td>
                   </tr>
                 </tbody>
               </table>
@@ -139,19 +143,19 @@
               </div>
             </a>
             <ng-template ngbNavContent>
-              <table class="table table-bordered table-striped w-100 mt-3">
+              <table class="table table-hover view-table w-100 mt-3">
                 <tbody>
                   <tr>
-                    <td style="width: 50%;">Description</td>
-                    <td style="width: 50%;">{{ currentRecord.description }}</td>
+                    <td style="width: 30%;">Description</td>
+                    <td style="width: 70%;">{{ currentRecord.description }}</td>
                   </tr>
                   <tr>
-                    <td style="width: 50%;">Address</td>
-                    <td style="width: 50%;">{{ currentRecord.address }}</td>
+                    <td>Address</td>
+                    <td>{{ currentRecord.address }}</td>
                   </tr>
                   <tr>
-                    <td style="width: 50%;">Status</td>
-                    <td style="width: 50%;">{{ employee_status }}</td>
+                    <td>Status</td>
+                    <td>{{ currentRecord.status }}</td>
                   </tr>
                 </tbody>
               </table>

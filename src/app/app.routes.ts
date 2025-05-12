@@ -20,7 +20,7 @@ export const routes: Routes = [
       {
         path: 'dashboard',
         loadComponent: () => import('./views/pages/dashboard/dashboard.component').then(c => c.DashboardComponent),
-        data: { title: 'Cities' },
+        data: { title: 'Dashboard' },
         canActivate: [AuthGuard]
       },
 
@@ -42,7 +42,7 @@ export const routes: Routes = [
 
       // Employees Edit
       {
-        path: 'employees/edit/:slug',
+        path: 'employees/edit/:id',
         loadComponent: () => import('./views/pages/employees/setup/setup.component').then(c => c.EmployeesSetupComponent),
         data: { title: 'Employees Edit' },
         canActivate: [AuthGuard]
@@ -50,7 +50,7 @@ export const routes: Routes = [
 
       // Employees View
       {
-        path: 'employees/view/:slug',
+        path: 'employees/view/:id',
         loadComponent: () => import('./views/pages/employees/view/view.component').then(c => c.EmployeesViewComponent),
         data: { title: 'Employees View' },
         canActivate: [AuthGuard]
@@ -91,8 +91,24 @@ export const routes: Routes = [
       // Attendances Add
       {
         path: 'attendances/add',
-        loadComponent: () => import('./views/pages/attendances/setup/setup.component').then(c => c.AttendancesSetupComponent),
+        loadComponent: () => import('./views/pages/attendances/add/add.component').then(c => c.AttendancesAddComponent),
         data: { title: 'Attendances Add' },
+        canActivate: [AuthGuard]
+      },
+
+      // Attendances Edit
+      {
+        path: 'attendances/edit/:id',
+        loadComponent: () => import('./views/pages/attendances/edit/edit.component').then(c => c.AttendancesEditComponent),
+        data: { title: 'Attendances Edit' },
+        canActivate: [AuthGuard]
+      },
+
+      // Attendances View
+      {
+        path: 'attendances/view/:id',
+        loadComponent: () => import('./views/pages/attendances/view/view.component').then(c => c.AttendancesViewComponent),
+        data: { title: 'Attendances View' },
         canActivate: [AuthGuard]
       },
 
@@ -109,6 +125,14 @@ export const routes: Routes = [
         path: 'leave-applications/leave-types',
         loadComponent: () => import('./views/pages/leave-applications/leave-types/leave-types.component').then(c => c.LeaveTypesComponent),
         data: { title: 'Leave Types' },
+        canActivate: [AuthGuard]
+      },
+
+      // Salary Wizards
+      {
+        path: 'salary-wizards',
+        loadComponent: () => import('./views/pages/salary-wizards/salary-wizards.component').then(c => c.SalaryWizardsComponent),
+        data: { title: 'Salary Wizards' },
         canActivate: [AuthGuard]
       },
 
@@ -240,6 +264,14 @@ export const routes: Routes = [
         canActivate: [AuthGuard]
       },
 
+      // Companies
+      {
+        path: 'companies',
+        loadComponent: () => import('./views/pages/companies/companies.component').then(c => c.CompaniesComponent),
+        data: { title: 'Companies' },
+        canActivate: [AuthGuard]
+      },
+
       // Users
       {
         path: 'users',
@@ -258,7 +290,7 @@ export const routes: Routes = [
 
       // Users Edit
       {
-        path: 'users/edit/:slug',
+        path: 'users/edit/:id',
         loadComponent: () => import('./views/pages/users/setup/setup.component').then(c => c.UsersSetupComponent),
         data: { title: 'Users Edit' },
         canActivate: [AuthGuard]
@@ -266,7 +298,7 @@ export const routes: Routes = [
 
       // User Profile
       {
-        path: 'users/profile/:slug',
+        path: 'users/profile/:id',
         loadComponent: () => import('./views/pages/users/profile/profile.component').then(c => c.ProfileComponent),
         data: { title: 'User Profile' },
         canActivate: [AuthGuard]
@@ -277,14 +309,6 @@ export const routes: Routes = [
         path: 'change-password',
         loadComponent: () => import('./views/pages/users/change-password/change-password.component').then(c => c.ChangePasswordComponent),
         data: { title: 'Change Password' },
-        canActivate: [AuthGuard]
-      },
-
-      // Settings
-      {
-        path: 'settings',
-        loadComponent: () => import('./views/pages/settings/settings.component').then(c => c.SettingsComponent),
-        data: { title: 'Settings' },
         canActivate: [AuthGuard]
       },
 

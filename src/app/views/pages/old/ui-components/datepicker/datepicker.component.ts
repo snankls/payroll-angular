@@ -2,7 +2,7 @@ import { JsonPipe } from '@angular/common';
 import { Component, inject, OnInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { NgbCalendar, NgbDate, NgbDateParserFormatter, NgbDatepickerModule, NgbDateStruct } from '@ng-bootstrap/ng-bootstrap';
-import { CodePreviewComponent } from '../../../../partials/code-preview/code-preview.component';
+import { CodePreviewComponent } from '../../partials/code-preview/code-preview.component';
 
 const defaultDatepicker = {
   htmlCode: 

@@ -116,9 +116,9 @@ export class DepartmentsComponent implements OnInit {
 
   fetchCities(): void {
     this.http.get<Department[]>(`${this.API_URL}/departments`).subscribe({
-      next: (data) => {
-        this.rows = data;
-        this.temp = [...data];
+      next: (response) => {
+        this.rows = response;
+        this.temp = [...response];
         this.loadingIndicator = false;
       },
       error: (error) => {

@@ -161,7 +161,8 @@ export class LeaveApplicationsComponent implements OnInit {
       next: (response) => {
         // Map each employee to add a custom label
         this.employees = response.map((employee) => ({
-          ...employee
+          ...employee,
+          employee_label: `${employee.full_name} (${employee.code})`,
         }));
       },
       error: (error) => console.error('Failed to fetch employees:', error)
@@ -179,11 +180,11 @@ export class LeaveApplicationsComponent implements OnInit {
 
   fetchLeaveApplications(): void {
     this.http.get<LeaveApplication[]>(`${this.API_URL}/leave-applications`).subscribe({
-      next: (data) => {
-        this.rows = data.map(item => ({
+      next: (response) => {
+        this.rows = response.map(item => ({
           ...item,
           proof: item.image_url
-            ? `${this.IMAGE_URL}/storage/leave-applications/${item.image_url}`
+            ? `${this.IMAGE_URL}/uploads/leave-applications/${item.image_url}`
             : 'images/placeholder.jpg'
         }));
         this.temp = [...this.rows];

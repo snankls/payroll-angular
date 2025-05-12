@@ -1,0 +1,67 @@
+<app-breadcrumb></app-breadcrumb>
+
+<div class="row chat-wrapper">
+  <div class="col-md-12">
+    <div class="card">
+      <div class="card-body">
+        <div class="wizard">
+  
+
+          <aw-wizard #wizardForm>
+            
+            <aw-wizard-step stepTitle="Select Month">
+              <ng-select
+                [items]="monthYearOptions"
+                bindLabel="label"
+                bindValue="id"
+                name="month_year"
+                placeholder="Select month"
+                [searchable]="true"
+                (change)="onMonthSelect($event)">
+              </ng-select>
+
+              <div class="mt-2">
+                <button class="btn btn-primary" type="button" (click)="goToNext()">Next</button>
+              </div>
+            </aw-wizard-step>
+
+            <aw-wizard-step stepTitle="Employee Attendance">
+              <ul *ngIf="employeesWithAttendance?.length">
+                <li *ngFor="let emp of employeesWithAttendance">{{ emp.full_name }}</li>
+              </ul>
+
+              <div class="mt-2">
+                <button class="btn btn-primary" type="button" (click)="nextStep()">Next</button>
+              </div>
+            </aw-wizard-step>
+
+            <aw-wizard-step stepTitle="finish">
+              <table class="table">
+                <tr>
+                  <th>Employee</th>
+                  <th>Basic Salary</th>
+                  <th>Present Days</th>
+                  <th>Deductions</th>
+                  <th>Net Salary</th>
+                </tr>
+                <tr *ngFor="let salary of employeeSalaries">
+                  <td>{{ salary.name }}</td>
+                  <td>{{ salary.basic_salary }}</td>
+                  <td>{{ salary.present_days }}</td>
+                  <td>{{ salary.deductions }}</td>
+                  <td>{{ salary.net_salary }}</td>
+                </tr>
+              </table>
+            </aw-wizard-step>
+
+          </aw-wizard>
+
+
+
+
+
+
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,10 +1,34 @@
 import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpErrorResponse } from '@angular/common/http';
+import { ActivatedRoute, Router } from '@angular/router';
 import { NgbDropdownModule, NgbNavContent, NgbNavModule, NgbTooltip, NgbNavOutlet } from '@ng-bootstrap/ng-bootstrap';
 import { BreadcrumbComponent } from '../../../layout/breadcrumb/breadcrumb.component';
 import { environment } from '../../../../environments/environment';
-import { ActivatedRoute } from '@angular/router';
+
+interface CompanyAsset {
+  id: number | null;
+  full_name: string | null;
+  issue_date: string;
+  status: number | null;
+  description?: string;
+  slug?: string;
+  employee?: {
+    full_name: string;
+  };
+  details?: CompanyAssetDetail[];
+}
+
+interface CompanyAssetDetail {
+  id: number;
+  company_asset_id: number;
+  asset_type_id: number;
+  description: string;
+  status: number;
+  asset_type?: {
+    name: string;
+  };
+}
 
 interface Employee {
   id?: number | null;
@@ -35,14 +59,16 @@ interface Employee {
 export class CompanyAssetsViewComponent {
   private API_URL = environment.API_URL;
 
-  currentRecord: Employee = {
+  currentRecord: CompanyAsset = {
+    id: null,
     full_name: null,
     issue_date: '',
     status: null,
     description: '',
     employee: {
       full_name: '',
-    }
+    },
+    details: []
   };
 
   itemsList: {
@@ -56,7 +82,8 @@ export class CompanyAssetsViewComponent {
     };
   }[] = [];
   
-
+  loading = false;
+  errorMessage = '';
   rows: any[] = [];
   loadingIndicator = false;
   company_asset_status: string = '';
@@ -65,7 +92,7 @@ export class CompanyAssetsViewComponent {
   constructor(
       private http: HttpClient,
       private route: ActivatedRoute,
-      //private router: Router
+      private router: Router
     ) {}
 
   ngOnInit(): void {
@@ -79,11 +106,30 @@ export class CompanyAssetsViewComponent {
   }
 
   loadCompanyAssets(id: number) {
-    this.http.get<any>(`${this.API_URL}/company-assets/${id}`).subscribe(response => {
-      this.currentRecord = response;
-      
-      // ✅ Assign items list
-      this.itemsList = response.details || [];
+    this.loading = true;
+    this.errorMessage = '';
+
+    this.http.get<CompanyAsset>(`${this.API_URL}/company-assets/${id}`).subscribe({
+      next: (response) => {
+        this.currentRecord = response;
+        this.itemsList = response.details || [];
+      },
+      error: (error: HttpErrorResponse) => {
+        this.loading = false;
+        
+        if (error.status === 403 && error.error?.redirect) {
+          // Unauthorized access - redirect to dashboard
+          this.router.navigate(['/dashboard']);
+        } else if (error.status === 404) {
+          this.errorMessage = 'Company asset not found';
+        } else {
+          this.errorMessage = 'Failed to load company asset details';
+          console.error('Error loading company asset:', error);
+        }
+      },
+      complete: () => {
+        this.loading = false;
+      }
     });
   }
 

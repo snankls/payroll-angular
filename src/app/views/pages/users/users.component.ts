@@ -82,7 +82,7 @@ export class UsersComponent {
         // Optionally, you can process image_url if necessary (e.g., fallback for missing images)
         this.rows.forEach((user) => {
           user.user_image = user.user_image
-            ? `${this.IMAGE_URL}/storage/users/${user.user_image}`
+            ? `${this.IMAGE_URL}/uploads/users/${user.user_image}`
             : 'images/placeholder.png';
         });
       },

@@ -2,7 +2,7 @@ import { Component, OnInit, TemplateRef } from '@angular/core';
 import { Router, RouterLink } from '@angular/router';
 import { NgbDropdownModule } from '@ng-bootstrap/ng-bootstrap';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
-import { ThemeModeService } from '../../../core/services/theme-mode.service';
+import { ThemeModeService } from '../../pages/old/services/theme-mode.service';
 import { AuthService } from '../../../auth/auth.service';
 import { environment } from '../../../environments/environment';
 
@@ -35,7 +35,7 @@ export class NavbarComponent implements OnInit {
       if (user) {
         this.user = user;
         this.user.imagePreview = user.images?.image_name
-          ? `${this.IMAGE_URL}/storage/users/${user.images.image_name}`
+          ? `${this.IMAGE_URL}/uploads/users/${user.images.image_name}`
           : 'images/placeholder.png';
       } else {
         this.user = null;

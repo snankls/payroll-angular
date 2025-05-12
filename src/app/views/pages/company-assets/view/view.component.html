@@ -4,29 +4,29 @@
   <div class="col-md-12 stretch-card">
     <div class="card">
       <div class="card-body">
-        <table class="table table-striped w-100 mt-3">
+        <table class="table table-striped view-table w-100 mt-3">
           <tbody>
             <tr>
-              <td style="width: 50%;">Employee Name</td>
-              <td style="width: 50%;">{{ currentRecord.employee?.full_name }}</td>
+              <td style="width: 30%;">Employee Name</td>
+              <td style="width: 70%;">{{ currentRecord.employee?.full_name }}</td>
             </tr>
             <tr>
-              <td style="width: 50%;">Issue Date</td>
-              <td style="width: 50%;">{{ currentRecord.issue_date }}</td>
+              <td>Issue Date</td>
+              <td>{{ currentRecord.issue_date }}</td>
             </tr>
             <tr>
-              <td style="width: 50%;">Description</td>
-              <td style="width: 50%;">{{ currentRecord.description }}</td>
+              <td>Description</td>
+              <td>{{ currentRecord.description }}</td>
             </tr>
             <tr>
-              <td style="width: 50%;">Status</td>
-              <td style="width: 50%;">{{ currentRecord.status == 1 ? 'Active' : 'Inactive' }}</td>
+              <td>Status</td>
+              <td>{{ currentRecord.status }}</td>
             </tr>
           </tbody>
         </table>
 
         <h5 class="mt-5">Company Asset Details</h5>
-        <table *ngIf="itemsList.length > 0" class="table table-bordered w-100 mt-3">
+        <table *ngIf="itemsList.length > 0" class="table table-hover w-100 mt-3">
           <thead>
             <tr>
               <th>Asset Type ID</th>
@@ -38,7 +38,7 @@
             <tr *ngFor="let item of itemsList; let i = index">
               <td>{{ item.asset_type?.name }}</td>
               <td>{{ item.description }}</td>
-              <td>{{ item.status === 1 ? 'Active' : 'Inactive' }}</td>
+              <td>{{ item.status }}</td>
             </tr>
           </tbody>
         </table>

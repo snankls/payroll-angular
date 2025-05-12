@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { CodePreviewComponent } from '../../../../partials/code-preview/code-preview.component';
+import { CodePreviewComponent } from '../../partials/code-preview/code-preview.component';
 import { NgbAccordionModule } from '@ng-bootstrap/ng-bootstrap';
 
 const defaultAccordion = {

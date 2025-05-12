@@ -243,18 +243,18 @@
             </div>
             <div class="text-center">
               <p class="tx-16 fw-bolder">{{ user?.full_name }}</p>
-              <p class="fs-12px text-secondary">{{ user?.email }}!</p>
+              <p class="fs-12px text-secondary">{{ user?.email }}</p>
             </div>
           </div>
           <ul class="list-unstyled p-1">
             <li>
-              <a routerLink="/users/profile/{{user?.slug}}" class="dropdown-item py-2 d-flex ms-0">
+              <a routerLink="/users/profile/{{user?.id}}" class="dropdown-item py-2 d-flex ms-0">
                 <i class="feather icon-user me-2 icon-md"></i>
                 <span>Profile</span>
               </a>
             </li>
             <li>
-              <a href="/users/edit/{{user?.slug}}" class="dropdown-item py-2 d-flex ms-0">
+              <a href="/users/edit/{{user?.id}}" class="dropdown-item py-2 d-flex ms-0">
                 <i class="feather icon-edit me-2 icon-md"></i>
                 <span>Edit Profile</span>
               </a>

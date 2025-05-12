@@ -126,13 +126,13 @@ export const MENU: MenuItem[] = [
     link: '/cities',
   },
   {
+    label: 'Companies',
+    icon: 'codesandbox',
+    link: '/companies',
+  },
+  {
     label: 'Users',
     icon: 'user',
     link: '/users',
-  },
-  {
-    label: 'Settings',
-    icon: 'settings',
-    link: '/settings',
   },
 ];

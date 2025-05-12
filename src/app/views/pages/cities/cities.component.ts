@@ -93,6 +93,12 @@ export class CitiesComponent implements OnInit {
     }
   }
 
+  clearError(field: string): void {
+    if (this.formErrors[field]) {
+      delete this.formErrors[field];
+    }
+  }
+
   fetchStatus(): void {
     this.http.get<any>(`${this.API_URL}/status`).subscribe({
       next: (response) => {
@@ -106,9 +112,10 @@ export class CitiesComponent implements OnInit {
 
   fetchCities(): void {
     this.http.get<City[]>(`${this.API_URL}/cities`).subscribe({
-      next: (data) => {
-        this.rows = data;
-        this.temp = [...data];
+      next: (response) => {
+        console.log(response)
+        this.rows = response;
+        this.temp = [...response];
         this.loadingIndicator = false;
       },
       error: (error) => {
@@ -212,10 +219,5 @@ export class CitiesComponent implements OnInit {
         });
     }
   }
-
-  clearError(field: string): void {
-    if (this.formErrors[field]) {
-      delete this.formErrors[field];
-    }
-  }
+  
 }

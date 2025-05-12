@@ -17005,12 +17005,10 @@ body {
   width: 10px;
   height: 32px;
 }
-[data-bs-theme=dark] .navbar .logo-mini-wrapper .logo-mini.logo-mini-light,
-[data-bs-theme=dark] .sidebar-header .logo-mini-wrapper .logo-mini.logo-mini-light {
+[data-bs-theme=dark] .navbar .logo-mini-wrapper .logo-mini.logo-mini-light {
   display: none;
 }
-[data-bs-theme=light] .navbar .logo-mini-wrapper .logo-mini.logo-mini-dark,
-[data-bs-theme=light] .sidebar-header .logo-mini-wrapper .logo-mini.logo-mini-dark {
+[data-bs-theme=light] .navbar .logo-mini-wrapper .logo-mini.logo-mini-dark {
   display: none;
 }
 .navbar .search-form {

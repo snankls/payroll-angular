@@ -1,9 +1,9 @@
 import { Component } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpErrorResponse } from '@angular/common/http';
+import { ActivatedRoute, Router } from '@angular/router';
 import { NgbDropdownModule, NgbNavContent, NgbNavModule, NgbTooltip, NgbNavOutlet } from '@ng-bootstrap/ng-bootstrap';
 import { BreadcrumbComponent } from '../../../layout/breadcrumb/breadcrumb.component';
 import { environment } from '../../../../environments/environment';
-import { ActivatedRoute } from '@angular/router';
 
 interface Employee {
   id?: number;
@@ -12,6 +12,7 @@ interface Employee {
   last_name: string;
   email: string;
   phone_number: string;
+  religion: string | null;
   gender: string | null;
   date_of_birth?: string | null;
   joining_date: string | null;
@@ -61,6 +62,7 @@ export class EmployeesViewComponent {
     last_name: '',
     email: '',
     phone_number: '',
+    religion: '',
     gender: null,
     date_of_birth: '',
     joining_date: '',
@@ -81,6 +83,8 @@ export class EmployeesViewComponent {
     image: ''
   };
 
+  isLoading: boolean = false;
+  errorMessage: string = '';
   defaultNavActiveId = 1;
   rows: any[] = [];
   loadingIndicator = false;
@@ -88,34 +92,48 @@ export class EmployeesViewComponent {
   imagePreview: string | ArrayBuffer | null = null;
 
   constructor(
-      private http: HttpClient,
-      private route: ActivatedRoute,
-      //private router: Router
-    ) {}
+    private http: HttpClient,
+    private route: ActivatedRoute,
+    private router: Router
+  ) {}
 
   ngOnInit(): void {
-    // Handle slug-based route
+    // Handle id-based route
     this.route.paramMap.subscribe(params => {
-      const slug = params.get('slug');
-      if (slug) {
-        this.fetchEmployees(slug);
+      const id = params.get('id');
+      if (id) {
+        this.fetchEmployees(+id);
       }
     });
   }
 
-  fetchEmployees(slug: string): void {
-    this.http.get<Employee>(`${this.API_URL}/employee/${slug}`).subscribe(employee => {
-      this.currentRecord = {
-        ...this.currentRecord,
-        ...employee,
-      };
-
-      if (employee.status) {
-        this.employee_status = employee.status === 1 ? 'Active' : 'Inactive';
-      }
-  
-      if (employee.images && employee.images.image_name) {
-        this.imagePreview = `${this.IMAGE_URL}/storage/employees/${employee.images.image_name}`;
+  fetchEmployees(id: number): void {
+    this.isLoading = true;
+    this.errorMessage = '';
+    
+    this.http.get<Employee>(`${this.API_URL}/employee/${id}`).subscribe({
+      next: (employee) => {
+        this.currentRecord = {
+          ...this.currentRecord,
+          ...employee,
+        };
+    
+        if (employee.images && employee.images.image_name) {
+          this.imagePreview = `${this.IMAGE_URL}/uploads/employees/${employee.images.image_name}`;
+        }
+        this.isLoading = false;
+      },
+      error: (error: HttpErrorResponse) => {
+        this.isLoading = false;
+        
+        if (error.status === 403 || error.status === 404) {
+          // Unauthorized access or not found - redirect to dashboard
+          this.router.navigate(['/dashboard']);
+        } else {
+          // Handle other errors
+          this.errorMessage = 'Failed to load employee details. Please try again.';
+          console.error('Error fetching employee:', error);
+        }
       }
     });
   }

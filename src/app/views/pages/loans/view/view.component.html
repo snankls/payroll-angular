@@ -4,45 +4,45 @@
   <div class="col-md-12 stretch-card">
     <div class="card">
       <div class="card-body">
-        <table class="table table-striped w-100 mt-3">
+        <table class="table table-striped view-table w-100 mt-3">
           <tbody>
             <tr>
-              <td style="width: 50%;">Employee Name</td>
-              <td style="width: 50%;">{{ currentRecord.employee_name }}</td>
+              <td style="width: 30%;">Employee Name</td>
+              <td style="width: 70%;">{{ currentRecord.employee_name }}</td>
             </tr>
             <tr>
-              <td style="width: 50%;">Loan Amount</td>
-              <td style="width: 50%;">{{ currentRecord.loan_amount | number }}</td>
+              <td>Loan Amount</td>
+              <td>{{ currentRecord.loan_amount | number }}</td>
             </tr>
             <tr>
-              <td style="width: 50%;">Paid Loan Amount</td>
-              <td style="width: 50%;">{{ currentRecord.paid_amount | number }}</td>
+              <td>Paid Loan Amount</td>
+              <td>{{ currentRecord.paid_amount | number }}</td>
             </tr>
             <tr>
-              <td style="width: 50%;">Unpaid Loan Amount</td>
-              <td style="width: 50%;">{{ currentRecord.unpaid_amount | number }}</td>
+              <td>Unpaid Loan Amount</td>
+              <td>{{ currentRecord.unpaid_amount | number }}</td>
             </tr>
             <tr>
-              <td style="width: 50%;">Remaining Loan Amount</td>
-              <td style="width: 50%;">{{ currentRecord.remaining_amount | number }}</td>
+              <td>Remaining Loan Amount</td>
+              <td>{{ currentRecord.remaining_amount | number }}</td>
             </tr>
             <tr>
-              <td style="width: 50%;">Issue Date</td>
-              <td style="width: 50%;">{{ currentRecord.issue_date }}</td>
+              <td>Issue Date</td>
+              <td>{{ currentRecord.issue_date }}</td>
             </tr>
             <tr>
-              <td style="width: 50%;">Description</td>
-              <td style="width: 50%;">{{ currentRecord.description }}</td>
+              <td>Description</td>
+              <td>{{ currentRecord.description }}</td>
             </tr>
             <tr>
-              <td style="width: 50%;">Status</td>
-              <td style="width: 50%;">{{ currentRecord.status == 1 ? 'Active' : 'Inactive' }}</td>
+              <td>Status</td>
+              <td>{{ currentRecord.status }}</td>
             </tr>
           </tbody>
         </table>
 
         <h5 class="mt-5">Loan Installment Details</h5>
-        <table *ngIf="itemsList.length > 0" class="table table-bordered w-100 mt-3">
+        <table *ngIf="itemsList.length > 0" class="table table-hover w-100 mt-3">
           <thead>
             <tr>
               <th>Return Date</th>

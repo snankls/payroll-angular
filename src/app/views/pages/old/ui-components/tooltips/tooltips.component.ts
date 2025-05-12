@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { CodePreviewComponent } from '../../../../partials/code-preview/code-preview.component';
+import { CodePreviewComponent } from '../../partials/code-preview/code-preview.component';
 import { NgbTooltipModule } from '@ng-bootstrap/ng-bootstrap';
 
 const defaultTooltips = {

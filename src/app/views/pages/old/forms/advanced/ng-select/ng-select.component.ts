@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { NgLabelTemplateDirective, NgOptionTemplateDirective, NgSelectComponent as MyNgSelectComponent } from '@ng-select/ng-select';
 
-import { PeoplesData, Person } from '../../../../../../core/dummy-datas/peoples.data';
+import { PeoplesData, Person } from '../../../dummy-datas/peoples.data';
 import { UpperCasePipe } from '@angular/common';
 import { RouterLink } from '@angular/router';
 

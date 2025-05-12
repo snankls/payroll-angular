@@ -12,7 +12,7 @@
               <label class="form-label">Select Employee <span class="text-danger">*</span></label>
               <ng-select
                 [items]="employees"
-                bindLabel="full_name"
+                bindLabel="employee_label"
                 bindValue="id"
                 [(ngModel)]="currentRecord.employee_id"
                 name="employee_id"

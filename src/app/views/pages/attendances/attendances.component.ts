@@ -36,21 +36,18 @@ export class AttendancesComponent {
   ) { }
 
   ngOnInit(): void {
-    this.fetchCompanyAssets();
+    this.fetchAttendances();
   }
 
   updateFilter(event: KeyboardEvent) {
-    const val = (event.target as HTMLInputElement).value.toLocaleLowerCase();
-    
-    // filter our data
-    const temp = this.temp.filter(function(d: any) {
-      return d.name.toLocaleLowerCase().indexOf(val) !== -1 || !val;
-    })
-
-    // update the rows
-    this.rows = temp;
-
-    // whenever the filter changes, always go back to the first page
+    const val = (event.target as HTMLInputElement).value.toLowerCase();
+  
+    this.rows = this.temp.filter(d =>
+      (d.employee_name && d.employee_name.toLowerCase().includes(val)) ||
+      (d.code && d.code.toLowerCase().includes(val))
+    );
+  
+    // Reset pagination to first page
     this.table.offset = 0;
   }
 
@@ -71,15 +68,15 @@ export class AttendancesComponent {
     }
   }
 
-  fetchCompanyAssets(): void {
-    this.loadingIndicator = true;
-  
-    this.http.get<any[]>(`${this.API_URL}/company-assets`).subscribe({
+  fetchAttendances(): void {
+    this.http.get<[]>(`${this.API_URL}/attendances`).subscribe({
       next: (response) => {
         this.rows = response;
+        this.temp = [...response];
         this.loadingIndicator = false;
       },
       error: (error) => {
+        console.error('Error fetching cities:', error);
         this.loadingIndicator = false;
       }
     });
@@ -88,7 +85,7 @@ export class AttendancesComponent {
   deleteSelectedRecords(): void {
     if (confirm('Are you sure you want to permanent delete the selected record(s)?')) {
       const ids = this.selected.map(row => row.id);
-      const deleteRequests = ids.map(id => this.http.delete(`${this.API_URL}/company-assets/${id}`).toPromise());
+      const deleteRequests = ids.map(id => this.http.delete(`${this.API_URL}/attendances/${id}`).toPromise());
 
       Promise.all(deleteRequests)
         .then(() => {

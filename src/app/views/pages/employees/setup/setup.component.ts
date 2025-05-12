@@ -7,7 +7,7 @@ import { ColumnMode, NgxDatatableModule } from '@siemens/ngx-datatable';
 import { NgbDateStruct, NgbDatepickerModule } from '@ng-bootstrap/ng-bootstrap';
 import { BreadcrumbComponent } from '../../../layout/breadcrumb/breadcrumb.component';
 import { environment } from '../../../../environments/environment';
-import { NgLabelTemplateDirective, NgOptionTemplateDirective, NgSelectComponent as MyNgSelectComponent } from '@ng-select/ng-select';
+import { NgSelectComponent as MyNgSelectComponent } from '@ng-select/ng-select';
 
 interface Employee {
   id?: number;
@@ -16,6 +16,7 @@ interface Employee {
   last_name: string;
   email: string;
   phone_number: string;
+  religion: string | null;
   gender: string | null;
   date_of_birth?: NgbDateStruct | string | null;
   joining_date: NgbDateStruct | string | null;
@@ -30,12 +31,11 @@ interface Employee {
   medical_allowances?: number;
   petrol_allowances?: number;
   total_salary: number;
-  status: number | null;
+  status: string | null;
   address: string;
   description?: string;
   image?: File | string | null;
   image_url?: string;
-  slug?: string;
   images?: {
     image_name: string;
   };
@@ -65,6 +65,7 @@ export class EmployeesSetupComponent {
     last_name: '',
     email: '',
     phone_number: '',
+    religion: null,
     gender: null,
     date_of_birth: '',
     joining_date: '',
@@ -97,7 +98,8 @@ export class EmployeesSetupComponent {
   cities: any[] = [];
   banks: any[] = [];
   gender: { id: string; name: string }[] = [];
-  status: { id: number; name: string }[] = [];
+  religions: { id: string; name: string }[] = [];
+  status: { id: string; name: string }[] = [];
   selectedFile: File | null = null;
   imagePreview: string | ArrayBuffer | null = null;
   
@@ -119,6 +121,7 @@ export class EmployeesSetupComponent {
     this.fetchJobTypes();
     this.fetchCities();
     this.fetchBanks();
+    this.fetchReligion();
     this.fetchStatus();
 
     this.gender = [
@@ -127,11 +130,11 @@ export class EmployeesSetupComponent {
       { id: 'Other', name: 'Other' },
     ];
 
-    // Handle slug-based route
+    // Handle id-based route
     this.route.paramMap.subscribe(params => {
-      const slug = params.get('slug');
-      if (slug) {
-        this.loadEmployee(slug);
+      const id = params.get('id');
+      if (id) {
+        this.loadEmployee(+id);
       }
     });
   }
@@ -203,19 +206,30 @@ export class EmployeesSetupComponent {
     });
   }
 
+  fetchReligion(): void {
+    this.http.get<any>(`${this.API_URL}/religions`).subscribe({
+      next: (response) => {
+        this.religions = Object.entries(response)
+          .filter(([key]) => key !== '')
+          .map(([key, value]) => ({ id: String(key), name: value as string }));
+      },
+      error: (error) => console.error('Failed to fetch religions:', error)
+    });
+  }
+
   fetchStatus(): void {
     this.http.get<any>(`${this.API_URL}/status`).subscribe({
       next: (response) => {
         this.status = Object.entries(response)
           .filter(([key]) => key !== '')
-          .map(([key, value]) => ({ id: Number(key), name: value as string }));
+          .map(([key, value]) => ({ id: String(key), name: value as string }));
       },
       error: (error) => console.error('Failed to fetch status:', error)
     });
   }
 
-  loadEmployee(slug: string) {
-    this.http.get<Employee>(`${this.API_URL}/employee/${slug}`).subscribe(employee => {
+  loadEmployee(id: number) {
+    this.http.get<Employee>(`${this.API_URL}/employee/${id}`).subscribe(employee => {
       this.currentRecord = {
         ...this.currentRecord,
         ...employee,
@@ -232,7 +246,7 @@ export class EmployeesSetupComponent {
       };
   
       if (employee.images && employee.images.image_name) {
-        this.imagePreview = `${this.IMAGE_URL}/storage/employees/${employee.images.image_name}`;
+        this.imagePreview = `${this.IMAGE_URL}/uploads/employees/${employee.images.image_name}`;
       }
   
       this.isEditMode = true;
@@ -336,16 +350,6 @@ export class EmployeesSetupComponent {
         // Check if the error is related to a duplicate value like code, email, etc.
         if (error?.error?.errors) {
           this.formErrors = error.error.errors;
-          
-          // Check for duplicate value error
-          if (error.error.errors?.code) {
-            this.formErrors.code = ['Employee code already exists.'];
-          }
-  
-          // Check for duplicate email error
-          if (error.error.errors?.email) {
-            this.formErrors.email = ['Email address already exists.'];
-          }
         }
       }
     });

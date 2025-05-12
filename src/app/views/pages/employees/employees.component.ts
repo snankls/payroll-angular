@@ -79,7 +79,7 @@ export class EmployeesComponent {
         // Optionally, you can process image_url if necessary (e.g., fallback for missing images)
         this.rows.forEach((employee) => {
           employee.employee_image = employee.image_url
-            ? `${this.IMAGE_URL}/storage/employees/${employee.image_url}`
+            ? `${this.IMAGE_URL}/uploads/employees/${employee.image_url}`
             : 'images/placeholder.png';
         });
       },

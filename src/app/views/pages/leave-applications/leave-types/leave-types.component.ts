@@ -106,9 +106,9 @@ export class LeaveTypesComponent implements OnInit {
 
   fetchLeaveTypes(): void {
     this.http.get<Bank[]>(`${this.API_URL}/leave-types`).subscribe({
-      next: (data) => {
-        this.rows = data;
-        this.temp = [...data];
+      next: (response) => {
+        this.rows = response;
+        this.temp = [...response];
         this.loadingIndicator = false;
       },
       error: (error) => {

@@ -1,7 +1,7 @@
 import { Component, inject, OnInit } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { NgApexchartsModule } from 'ng-apexcharts';
-import { ThemeCssVariableService, ThemeCssVariablesType } from '../../../../../core/services/theme-css-variable.service';
+import { ThemeCssVariableService, ThemeCssVariablesType } from '../../services/theme-css-variable.service';
 
 @Component({
   selector: 'app-apexcharts',

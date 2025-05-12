@@ -10,22 +10,20 @@ import { environment } from '../../../../environments/environment';
 import { NgSelectComponent as MyNgSelectComponent } from '@ng-select/ng-select';
 
 interface User {
+  company_id: number | null;
   id?: number;
   first_name: string;
   last_name: string;
   username: string;
   email: string;
-  password: string,
-  confirm_password: string,
   phone_number: string;
   gender: string | null;
   date_of_birth?: NgbDateStruct | string | null;
   city_id: number | null;
-  status: number | null;
+  status: string | null;
   address: string;
   image?: File | string | null;
   image_url?: string;
-  slug?: string;
   images?: {
     image_name: string;
   };
@@ -50,12 +48,11 @@ export class UsersSetupComponent {
   private IMAGE_URL = environment.IMAGE_URL;
 
   currentRecord: User = {
+    company_id: null,
     first_name: '',
     last_name: '',
     username: '',
     email: '',
-    password: '',
-    confirm_password: '',
     phone_number: '',
     gender: null,
     date_of_birth: '',
@@ -74,9 +71,10 @@ export class UsersSetupComponent {
   formErrors: any = {};
   cities: any[] = [];
   gender: { id: string; name: string }[] = [];
-  status: { id: number; name: string }[] = [];
+  status: { id: string; name: string }[] = [];
   selectedFile: File | null = null;
   imagePreview: string | ArrayBuffer | null = null;
+  companies: any[] = [];
   
   rows = [];
   temp = [];
@@ -91,6 +89,7 @@ export class UsersSetupComponent {
   ) {}
 
   ngOnInit(): void {
+    this.fetchCompanies();
     this.fetchCities();
     this.fetchStatus();
 
@@ -100,11 +99,11 @@ export class UsersSetupComponent {
       { id: 'Other', name: 'Other' },
     ];
 
-    // Handle slug-based route
+    // Handle id-based route
     this.route.paramMap.subscribe(params => {
-      const slug = params.get('slug');
-      if (slug) {
-        this.loadUser(slug);
+      const id = params.get('id');
+      if (id) {
+        this.fetchUsers(+id);
       }
     });
   }
@@ -113,6 +112,18 @@ export class UsersSetupComponent {
     if (this.formErrors[field]) {
       delete this.formErrors[field];
     }
+  }
+
+  fetchCompanies(): void {
+    this.http.get<any[]>(`${this.API_URL}/active/companies`).subscribe({
+      next: (response) => {
+        // Map each asset type to add a custom label
+        this.companies = response.map((companies) => ({
+          ...companies
+        }));
+      },
+      error: (error) => console.error('Failed to fetch employees:', error)
+    });
   }
 
   fetchCities(): void {
@@ -129,14 +140,14 @@ export class UsersSetupComponent {
       next: (response) => {
         this.status = Object.entries(response)
           .filter(([key]) => key !== '')
-          .map(([key, value]) => ({ id: Number(key), name: value as string }));
+          .map(([key, value]) => ({ id: String(key), name: value as string }));
       },
       error: (error) => console.error('Failed to fetch status:', error)
     });
   }
 
-  loadUser(slug: string) {
-    this.http.get<User>(`${this.API_URL}/user/${slug}`).subscribe(user => {
+  fetchUsers(id: number) {
+    this.http.get<User>(`${this.API_URL}/user/${id}`).subscribe(user => {
       this.currentRecord = {
         ...this.currentRecord,
         ...user,
@@ -147,7 +158,7 @@ export class UsersSetupComponent {
       };
   
       if (user.images && user.images.image_name) {
-        this.imagePreview = `${this.IMAGE_URL}/storage/users/${user.images.image_name}`;
+        this.imagePreview = `${this.IMAGE_URL}/uploads/users/${user.images.image_name}`;
       }
   
       this.isEditMode = true;
@@ -179,14 +190,7 @@ export class UsersSetupComponent {
   // Add your onSubmit method
   onSubmit(event: Event): void {
     event.preventDefault();
-    this.isLoading = true;
-
-    // Password and Confirm Password validation
-    if (this.currentRecord.password !== this.currentRecord.confirm_password) {
-      this.formErrors.confirm_password = ['Passwords do not match'];
-      this.isLoading = false;
-      return;
-    }    
+    this.isLoading = true;  
 
     const formData = new FormData();
     const entries = Object.entries(this.currentRecord) as [keyof User, any][];
@@ -233,11 +237,6 @@ export class UsersSetupComponent {
     const entries = Object.entries(this.currentRecord) as [keyof User, any][];
   
     for (const [key, value] of entries) {
-      // Only include password fields if they are filled
-      if ((key === 'password' || key === 'confirm_password') && !value) {
-        continue; // skip empty password fields
-      }
-  
       if (value !== null && value !== undefined && value !== '') {
         if (key === 'date_of_birth') {
           formData.append(key, this.formatDate(value));
@@ -245,13 +244,6 @@ export class UsersSetupComponent {
           formData.append(key, value);
         }
       }
-    }
-  
-    // Optional: validate password match only if password is being updated
-    if (this.currentRecord.password && this.currentRecord.password !== this.currentRecord.confirm_password) {
-      this.formErrors.confirm_password = ['Passwords do not match'];
-      this.isLoading = false;
-      return;
     }
   
     if (this.selectedFile) {

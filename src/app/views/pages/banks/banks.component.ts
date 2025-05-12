@@ -123,9 +123,9 @@ export class BanksComponent implements OnInit {
 
   fetchBanks(): void {
     this.http.get<Bank[]>(`${this.API_URL}/banks`).subscribe({
-      next: (data) => {
-        this.rows = data;
-        this.temp = [...data];
+      next: (response) => {
+        this.rows = response;
+        this.temp = [...response];
         this.loadingIndicator = false;
       },
       error: (error) => {
