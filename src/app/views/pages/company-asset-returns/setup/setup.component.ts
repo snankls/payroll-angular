@@ -1,7 +1,7 @@
 import { ChangeDetectorRef, Component } from '@angular/core';
 import { RouterLink, ActivatedRoute, Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { FormsModule } from '@angular/forms';
 import { ColumnMode, NgxDatatableModule } from '@siemens/ngx-datatable';
 import { NgbDateStruct, NgbDatepickerModule } from '@ng-bootstrap/ng-bootstrap';
@@ -12,13 +12,12 @@ import { firstValueFrom } from 'rxjs';
 
 interface Employee {
   id?: number | null;
-  employee_id: string | null;
+  employee_id: number | null;
   return_date: string | NgbDateStruct;
   status: string | null;
   description?: string;
   slug?: string;
 }
-
 
 interface AssetDetail {
   detail_id: number;
@@ -27,13 +26,30 @@ interface AssetDetail {
   reason: string;
 }
 
-interface CompanyAssetReturnResponse {
+// interface CompanyAssetReturnResponse {
+//   id?: number;
+//   employee_id: string | null;
+//   return_date: string | NgbDateStruct;
+//   status: string | null;
+//   description: string;
+//   details: AssetDetail[];
+// }
+
+interface CompanyAssetReturnDetail {
   id?: number;
-  employee_id: string | null;
-  return_date: string | NgbDateStruct;
-  status: string | null;
+  detail_id?: number;
+  asset_type_id: number;
   description: string;
-  details: AssetDetail[];
+  reason: string;
+}
+
+interface CompanyAssetReturnResponse {
+  id: number;
+  employee_id: number;
+  return_date: string | NgbDateStruct;
+  status: string;
+  description?: string;
+  details: CompanyAssetReturnDetail[];
 }
 
 @Component({
@@ -169,19 +185,19 @@ export class CompanyAssetsSetupComponent {
 
   async fetchAssetTypes(employeeId: number): Promise<void> {
     try {
-        const response = await firstValueFrom(
-            this.http.get<any[]>(`${this.API_URL}/asset-types/${employeeId}`)
-        );
+      const response = await firstValueFrom(
+        this.http.get<any[]>(`${this.API_URL}/asset-types/${employeeId}`)
+      );
         
-        this.asset_types = response.map(asset => ({
-            ...asset,
-            composite_id: `${asset.asset_type_id}_${asset.detail_id}`,
-            name: asset.name || asset.asset_type?.name,
-            description: asset.description || asset.asset_type?.description
-        }));
+      this.asset_types = response.map(asset => ({
+        ...asset,
+        composite_id: `${asset.asset_type_id}_${asset.detail_id}`,
+        name: asset.name || asset.asset_type?.name,
+        description: asset.description || asset.asset_type?.description
+      }));
     } catch (error) {
-        console.error('Failed to fetch asset types:', error);
-        this.asset_types = [];
+      console.error('Failed to fetch asset types:', error);
+      this.asset_types = [];
     }
   }
 
@@ -251,8 +267,8 @@ export class CompanyAssetsSetupComponent {
     return this.itemsList.some((item, index) => {
       // Only check against items that have actually been selected (have a composite_id)
       return index !== currentIndex && 
-            item.composite_id && 
-            item.composite_id === compositeId;
+        item.composite_id && 
+        item.composite_id === compositeId;
     });
   }
 
@@ -317,45 +333,115 @@ export class CompanyAssetsSetupComponent {
     return `${date.year}-${String(date.month).padStart(2, '0')}-${String(date.day).padStart(2, '0')}`;
   }
 
-  async loadCompanyAssetReturns(id: number) {
+  async loadCompanyAssetReturns(id: number): Promise<void> {
+    this.isLoading = true;
+    this.errorMessage = '';
+
     try {
-        const response = await firstValueFrom(
-            this.http.get<CompanyAssetReturnResponse>(`${this.API_URL}/company-asset-returns/${id}`)
-        );
+      const response = await firstValueFrom(
+        this.http.get<CompanyAssetReturnResponse>(
+          `${this.API_URL}/company-asset-returns/${id}`
+        )
+      );
 
-        this.currentRecord = response;
-        
-        if (typeof this.currentRecord.return_date === 'string') {
-            this.currentRecord.return_date = this.parseDate(this.currentRecord.return_date);
+      this.currentRecord = {
+        ...response,
+        return_date: typeof response.return_date === 'string' 
+          ? this.parseDate(response.return_date)
+          : response.return_date
+      };
+
+      // Create itemsList with proper composite_id
+      this.itemsList = response.details.map((detail: CompanyAssetReturnDetail) => {
+        const detailId = detail.detail_id ?? detail.id;
+        if (!detailId) {
+          console.warn('Missing detail ID in response', detail);
+          throw new Error('Invalid detail data: missing ID');
         }
 
-        // PROPERLY create itemsList with correct composite_id
-        this.itemsList = response.details.map((detail: any) => {
-            // Extract detail_id from either detail.id or detail.detail_id
-            const detailId = detail.detail_id || detail.id;
-            return {
-                id: detail.asset_type_id,
-                detail_id: detailId,
-                asset_type_id: detail.asset_type_id,
-                composite_id: `${detail.asset_type_id}_${detailId}`,
-                description: detail.description,
-                reason: detail.reason
-            };
-        });
+        return {
+          id: detail.asset_type_id,
+          detail_id: detailId,
+          asset_type_id: detail.asset_type_id,
+          composite_id: `${detail.asset_type_id}_${detailId}`,
+          description: detail.description,
+          reason: detail.reason,
+          isSelected: true
+        };
+      });
 
-        // Then fetch asset types
-        if (this.currentRecord.employee_id) {
-            await this.fetchAssetTypes(Number(this.currentRecord.employee_id));
-            
-            // Force update of selections
-            this.forceSelectionUpdate();
+      // Fetch asset types if employee exists
+      if (this.currentRecord.employee_id) {
+        await this.fetchAssetTypes(Number(this.currentRecord.employee_id));
+        this.updateSelections();
+      }
+
+      this.isEditMode = true;
+    } catch (error: unknown) {
+      this.isLoading = false;
+      
+      if (error instanceof HttpErrorResponse) {
+        if (error.status === 403) {
+          this.router.navigate(['/dashboard']);
+        } else if (error.status === 404) {
+          this.errorMessage = 'Asset return record not found';
+        } else {
+          this.errorMessage = 'Failed to load asset return details';
+          console.error('API Error:', error);
         }
-        
-        this.isEditMode = true;
-    } catch (error) {
-        console.error('Error loading asset returns:', error);
+      } else {
+        this.errorMessage = 'An unexpected error occurred';
+        console.error('Unexpected Error:', error);
+      }
+    } finally {
+      this.isLoading = false;
     }
   }
+
+  private updateSelections(): void {
+    this.selectedRows = this.itemsList
+      .map((item, index) => item.isSelected ? index : -1)
+      .filter(index => index !== -1);
+  }
+  // async loadCompanyAssetReturns(id: number) {
+  //   try {
+  //       const response = await firstValueFrom(
+  //         this.http.get<CompanyAssetReturnResponse>(`${this.API_URL}/company-asset-returns/${id}`)
+  //       );
+
+  //       this.currentRecord = response;
+        
+  //       if (typeof this.currentRecord.return_date === 'string') {
+  //         this.currentRecord.return_date = this.parseDate(this.currentRecord.return_date);
+  //       }
+
+  //       // PROPERLY create itemsList with correct composite_id
+  //       this.itemsList = response.details.map((detail: any) => {
+  //         // Extract detail_id from either detail.id or detail.detail_id
+  //         const detailId = detail.detail_id || detail.id;
+  //         return {
+  //           id: detail.asset_type_id,
+  //           detail_id: detailId,
+  //           asset_type_id: detail.asset_type_id,
+  //           composite_id: `${detail.asset_type_id}_${detailId}`,
+  //           description: detail.description,
+  //           reason: detail.reason
+  //         };
+  //       });
+
+  //       // Then fetch asset types
+  //       if (this.currentRecord.employee_id) {
+  //         await this.fetchAssetTypes(Number(this.currentRecord.employee_id));
+          
+  //         // Force update of selections
+  //         this.forceSelectionUpdate();
+  //       }
+        
+  //       this.isEditMode = true;
+  //   } catch (error) {
+  //       console.error('Error loading asset returns:', error);
+  //   }
+  // }
 
   forceSelectionUpdate() {
     // Create a new array reference to trigger change detection

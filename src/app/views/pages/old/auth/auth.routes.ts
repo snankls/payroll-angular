@@ -4,7 +4,7 @@ export default [
   { path: '', redirectTo: 'login', pathMatch: 'full' },
   {
     path: 'login',
-    loadComponent: () => import('../../login/login.component').then(c => c.LoginComponent)
+    loadComponent: () => import('../../auth/login/login.component').then(c => c.LoginComponent)
   },
   {
     path: 'register',

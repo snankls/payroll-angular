@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { RouterLink, ActivatedRoute, Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { FormsModule } from '@angular/forms';
 import { ColumnMode, NgxDatatableModule } from '@siemens/ngx-datatable';
 import { NgbDateStruct, NgbDatepickerModule } from '@ng-bootstrap/ng-bootstrap';
@@ -16,6 +16,23 @@ interface CompanyAsset {
   status: string | null;
   description?: string;
   slug?: string;
+}
+
+interface CompanyAssetDetail {
+  id: number;
+  asset_type_id: number;
+  description: string;
+  status: string;
+}
+
+interface CompanyAssetResponse {
+  id: number;
+  employee_id: string | null;
+  issue_date: string | NgbDateStruct;
+  status: string | null;
+  description?: string;
+  slug?: string;
+  details: CompanyAssetDetail[];  // Changed from 'detail' to 'details' to match your API
 }
 
 @Component({
@@ -205,19 +222,62 @@ export class CompanyAssetsSetupComponent {
   }
 
   loadCompanyAssets(id: number) {
-    this.http.get<any>(`${this.API_URL}/company-assets/${id}`).subscribe(response => {
-      this.currentRecord = response;
-  
-      // ✅ Convert issue_date string to NgbDateStruct
-      if (typeof this.currentRecord.issue_date === 'string') {
-        this.currentRecord.issue_date = this.parseDate(this.currentRecord.issue_date);
+    this.isLoading = true;
+    this.errorMessage = '';
+    this.itemsList = [];
+
+    this.http.get<CompanyAssetResponse>(`${this.API_URL}/company-assets/${id}`).subscribe({
+      next: (response) => {
+        this.currentRecord = {
+          ...response,
+          issue_date: typeof response.issue_date === 'string' 
+            ? this.parseDate(response.issue_date) 
+            : response.issue_date
+        };
+
+        // Initialize itemsList with proper typing
+        this.itemsList = (response.details || []).map(detail => ({
+          ...detail,
+          isSelected: true
+        }));
+
+        this.isEditMode = true;
+        this.isLoading = false;
+        
+        // Fetch asset types if employee_id exists
+        // if (this.currentRecord.employee_id) {
+        //   this.fetchAssetTypes(Number(this.currentRecord.employee_id));
+        // }
+      },
+      error: (error: HttpErrorResponse) => {
+        this.isLoading = false;
+        
+        if (error.status === 403 && error.error?.redirect) {
+          this.router.navigate(['/dashboard']);
+        } else if (error.status === 404) {
+          this.errorMessage = 'Company asset not found';
+        } else {
+          this.errorMessage = 'Failed to load company asset details';
+          console.error('Error loading company asset:', error);
+        }
       }
-  
-      // ✅ Assign items list
-      this.itemsList = response.details || [];
-      this.isEditMode = true;
     });
   }
+
+  // loadCompanyAssets(id: number) {
+  //   this.http.get<any>(`${this.API_URL}/company-assets/${id}`).subscribe(response => {
+  //     this.currentRecord = response;
+  
+  //     // ✅ Convert issue_date string to NgbDateStruct
+  //     if (typeof this.currentRecord.issue_date === 'string') {
+  //       this.currentRecord.issue_date = this.parseDate(this.currentRecord.issue_date);
+  //     }
+  
+  //     // ✅ Assign items list
+  //     this.itemsList = response.details || [];
+  //     this.isEditMode = true;
+  //   });
+  // }
   
   // Add your onSubmit method
   onSubmit(event: Event): void {

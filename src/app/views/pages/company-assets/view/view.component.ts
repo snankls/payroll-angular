@@ -82,7 +82,7 @@ export class CompanyAssetsViewComponent {
     };
   }[] = [];
   
-  loading = false;
+  isLoading = false;
   errorMessage = '';
   rows: any[] = [];
   loadingIndicator = false;
@@ -90,10 +90,10 @@ export class CompanyAssetsViewComponent {
   imagePreview: string | ArrayBuffer | null = null;
 
   constructor(
-      private http: HttpClient,
-      private route: ActivatedRoute,
-      private router: Router
-    ) {}
+    private http: HttpClient,
+    private route: ActivatedRoute,
+    private router: Router
+  ) {}
 
   ngOnInit(): void {
     // Handle id-based route
@@ -106,7 +106,7 @@ export class CompanyAssetsViewComponent {
   }
 
   loadCompanyAssets(id: number) {
-    this.loading = true;
+    this.isLoading = true;
     this.errorMessage = '';
 
     this.http.get<CompanyAsset>(`${this.API_URL}/company-assets/${id}`).subscribe({
@@ -115,7 +115,7 @@ export class CompanyAssetsViewComponent {
         this.itemsList = response.details || [];
       },
       error: (error: HttpErrorResponse) => {
-        this.loading = false;
+        this.isLoading = false;
         
         if (error.status === 403 && error.error?.redirect) {
           // Unauthorized access - redirect to dashboard
@@ -124,11 +124,11 @@ export class CompanyAssetsViewComponent {
           this.errorMessage = 'Company asset not found';
         } else {
           this.errorMessage = 'Failed to load company asset details';
-          console.error('Error loading company asset:', error);
+          console.error('Error isLoading company asset:', error);
         }
       },
       complete: () => {
-        this.loading = false;
+        this.isLoading = false;
       }
     });
   }

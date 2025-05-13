@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { RouterLink, ActivatedRoute, Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { FormsModule } from '@angular/forms';
 import { ColumnMode, NgxDatatableModule } from '@siemens/ngx-datatable';
 import { NgbDateStruct, NgbDatepickerModule } from '@ng-bootstrap/ng-bootstrap';
@@ -229,29 +229,78 @@ export class EmployeesSetupComponent {
   }
 
   loadEmployee(id: number) {
-    this.http.get<Employee>(`${this.API_URL}/employee/${id}`).subscribe(employee => {
-      this.currentRecord = {
-        ...this.currentRecord,
-        ...employee,
+    this.isLoading = true;
+    this.errorMessage = '';
+    this.imagePreview = null;
+
+    this.http.get<Employee>(`${this.API_URL}/employee/${id}`).subscribe({
+      next: (employee) => {
+        this.currentRecord = {
+          ...this.currentRecord, // Preserve any existing values
+          ...employee, // Override with API response
+
+          date_of_birth: this.parseDateFromBackend(
+            typeof employee.date_of_birth === 'string' ? employee.date_of_birth : undefined
+          ),
+          joining_date: this.parseDateFromBackend(
+            typeof employee.joining_date === 'string' ? employee.joining_date : undefined
+          ),
+          resign_date: this.parseDateFromBackend(
+            typeof employee.resign_date === 'string' ? employee.resign_date : undefined
+          ),
+        };
+
+        // Handle image preview
+        if (employee.images?.image_name) {
+          this.imagePreview = `${this.IMAGE_URL}/uploads/employees/${employee.images.image_name}`;
+        }
+
+        this.isEditMode = true;
+      },
+      error: (error: HttpErrorResponse) => {
+        this.isLoading = false;
         
-        date_of_birth: this.parseDateFromBackend(
-          typeof employee.date_of_birth === 'string' ? employee.date_of_birth : undefined
-        ),
-        joining_date: this.parseDateFromBackend(
-          typeof employee.joining_date === 'string' ? employee.joining_date : undefined
-        ),
-        resign_date: this.parseDateFromBackend(
-          typeof employee.resign_date === 'string' ? employee.resign_date : undefined
-        ),
-      };
-  
-      if (employee.images && employee.images.image_name) {
-        this.imagePreview = `${this.IMAGE_URL}/uploads/employees/${employee.images.image_name}`;
+        if (error.status === 403 && error.error?.redirect) {
+          // Unauthorized access - redirect to dashboard
+          this.router.navigate(['/dashboard']);
+        } else if (error.status === 404) {
+          this.errorMessage = 'Employee record not found';
+        } else {
+          this.errorMessage = 'Failed to load employee details';
+          console.error('Error isLoading employee:', error);
+        }
+      },
+      complete: () => {
+        this.isLoading = false;
       }
-  
-      this.isEditMode = true;
     });
   }
+
+  // loadEmployee(id: number) {
+  //   this.http.get<Employee>(`${this.API_URL}/employee/${id}`).subscribe(employee => {
+  //     this.currentRecord = {
+  //       ...this.currentRecord,
+  //       ...employee,
+        
+  //       date_of_birth: this.parseDateFromBackend(
+  //         typeof employee.date_of_birth === 'string' ? employee.date_of_birth : undefined
+  //       ),
+  //       joining_date: this.parseDateFromBackend(
+  //         typeof employee.joining_date === 'string' ? employee.joining_date : undefined
+  //       ),
+  //       resign_date: this.parseDateFromBackend(
+  //         typeof employee.resign_date === 'string' ? employee.resign_date : undefined
+  //       ),
+  //     };
+  
+  //     if (employee.images && employee.images.image_name) {
+  //       this.imagePreview = `${this.IMAGE_URL}/uploads/employees/${employee.images.image_name}`;
+  //     }
+  
+  //     this.isEditMode = true;
+      
+  //   });
+  // }
 
   // Add these methods to your component class
   onFileSelected(event: Event): void {
@@ -338,7 +387,7 @@ export class EmployeesSetupComponent {
     if (this.selectedFile) {
       formData.append('employee_image', this.selectedFile);
     }
-  
+    
     // Proceed with the API request to update employee data
     this.http.post(`${this.API_URL}/employees`, formData).subscribe({
       next: (response) => {

@@ -105,5 +105,4 @@ export class ReportsUsersComponent {
     window.open(url, '_blank');
   }
   
-  
 }

@@ -1,16 +1,18 @@
 import { Component } from '@angular/core';
 import { RouterLink, ActivatedRoute, Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { FormsModule } from '@angular/forms';
 import { ColumnMode, NgxDatatableModule } from '@siemens/ngx-datatable';
 import { NgbDateStruct, NgbDatepickerModule } from '@ng-bootstrap/ng-bootstrap';
 import { BreadcrumbComponent } from '../../../layout/breadcrumb/breadcrumb.component';
 import { environment } from '../../../../environments/environment';
 import { NgSelectComponent as MyNgSelectComponent } from '@ng-select/ng-select';
+import { AuthService } from '../../../../auth/auth.service';
 
 interface User {
   company_id: number | null;
+  company_name: string | null;
   id?: number;
   first_name: string;
   last_name: string;
@@ -20,7 +22,6 @@ interface User {
   gender: string | null;
   date_of_birth?: NgbDateStruct | string | null;
   city_id: number | null;
-  status: string | null;
   address: string;
   image?: File | string | null;
   image_url?: string;
@@ -30,7 +31,7 @@ interface User {
 }
 
 @Component({
-  selector: 'app-setup',
+  selector: 'app-edit',
   standalone: true,
   imports: [
     BreadcrumbComponent,
@@ -41,14 +42,15 @@ interface User {
     NgbDatepickerModule,
     MyNgSelectComponent,
   ],
-  templateUrl: './setup.component.html'
+  templateUrl: './edit.component.html'
 })
-export class UsersSetupComponent {
+export class UsersEditComponent {
   private API_URL = environment.API_URL;
   private IMAGE_URL = environment.IMAGE_URL;
 
   currentRecord: User = {
     company_id: null,
+    company_name: null,
     first_name: '',
     last_name: '',
     username: '',
@@ -57,11 +59,11 @@ export class UsersSetupComponent {
     gender: null,
     date_of_birth: '',
     city_id: null,
-    status: null,
     address: '',
     image: ''
   };
-  
+
+  successMessage: string = '';
   globalError: string = '';
   globalErrorMessage: string = '';
   isEditMode = false;
@@ -71,10 +73,10 @@ export class UsersSetupComponent {
   formErrors: any = {};
   cities: any[] = [];
   gender: { id: string; name: string }[] = [];
-  status: { id: string; name: string }[] = [];
   selectedFile: File | null = null;
   imagePreview: string | ArrayBuffer | null = null;
   companies: any[] = [];
+  user: any = null;
   
   rows = [];
   temp = [];
@@ -83,6 +85,7 @@ export class UsersSetupComponent {
   ColumnMode = ColumnMode;
 
   constructor(
+    private authService: AuthService,
     private http: HttpClient,
     private route: ActivatedRoute,
     private router: Router
@@ -91,7 +94,6 @@ export class UsersSetupComponent {
   ngOnInit(): void {
     this.fetchCompanies();
     this.fetchCities();
-    this.fetchStatus();
 
     this.gender = [
       { id: 'Male', name: 'Male' },
@@ -99,11 +101,18 @@ export class UsersSetupComponent {
       { id: 'Other', name: 'Other' },
     ];
 
+    // Get Current User
+    this.authService.currentUser$.subscribe((user: User) => {
+      if (user) {
+        this.user = user;
+      }
+    });
+
     // Handle id-based route
     this.route.paramMap.subscribe(params => {
       const id = params.get('id');
       if (id) {
-        this.fetchUsers(+id);
+        this.loadUser(+id);
       }
     });
   }
@@ -135,35 +144,56 @@ export class UsersSetupComponent {
     });
   }
 
-  fetchStatus(): void {
-    this.http.get<any>(`${this.API_URL}/status`).subscribe({
-      next: (response) => {
-        this.status = Object.entries(response)
-          .filter(([key]) => key !== '')
-          .map(([key, value]) => ({ id: String(key), name: value as string }));
-      },
-      error: (error) => console.error('Failed to fetch status:', error)
-    });
-  }
+  loadUser(id: number) {
+    this.isLoading = true;
+    this.http.get<User>(`${this.API_URL}/user/${id}`).subscribe({
+      next: (user) => {
+        this.currentRecord = {
+          ...this.currentRecord,
+          ...user,
+          date_of_birth: this.parseDateFromBackend(
+            typeof user.date_of_birth === 'string' ? user.date_of_birth : undefined
+          ),
+        };
 
-  fetchUsers(id: number) {
-    this.http.get<User>(`${this.API_URL}/user/${id}`).subscribe(user => {
-      this.currentRecord = {
-        ...this.currentRecord,
-        ...user,
+        if (user.images?.image_name) {
+          this.imagePreview = `${this.IMAGE_URL}/uploads/users/${user.images.image_name}`;
+        }
+
+        this.isEditMode = true;
+        this.isLoading = false;
+      },
+      error: (error: HttpErrorResponse) => {
+        this.isLoading = false;
         
-        date_of_birth: this.parseDateFromBackend(
-          typeof user.date_of_birth === 'string' ? user.date_of_birth : undefined
-        ),
-      };
-  
-      if (user.images && user.images.image_name) {
-        this.imagePreview = `${this.IMAGE_URL}/uploads/users/${user.images.image_name}`;
+        if (error.status === 403 && error.error?.redirect) {
+          // Unauthorized access - redirect to dashboard
+          this.router.navigate(['/dashboard']);
+        } else if (error.status === 404) {
+        } else {
+          console.error('Error isLoading user:', error);
+        }
       }
-  
-      this.isEditMode = true;
     });
   }
+  // loadUsers(id: number) {
+  //   this.http.get<User>(`${this.API_URL}/user/${id}`).subscribe(user => {
+  //     this.currentRecord = {
+  //       ...this.currentRecord,
+  //       ...user,
+        
+  //       date_of_birth: this.parseDateFromBackend(
+  //         typeof user.date_of_birth === 'string' ? user.date_of_birth : undefined
+  //       ),
+  //     };
+  
+  //     if (user.images && user.images.image_name) {
+  //       this.imagePreview = `${this.IMAGE_URL}/uploads/users/${user.images.image_name}`;
+  //     }
+  
+  //     this.isEditMode = true;
+  //   });
+  // }
 
   // Add these methods to your component class
   onFileSelected(event: Event): void {
@@ -187,53 +217,51 @@ export class UsersSetupComponent {
     return `${date.year}-${String(date.month).padStart(2, '0')}-${String(date.day).padStart(2, '0')}`;
   }
   
-  // Add your onSubmit method
-  onSubmit(event: Event): void {
-    event.preventDefault();
-    this.isLoading = true;  
-
-    const formData = new FormData();
-    const entries = Object.entries(this.currentRecord) as [keyof User, any][];
-
-    for (const [key, value] of entries) {
-      if (value !== null && value !== undefined && value !== '') {
-        if (key === 'date_of_birth') {
-          formData.append(key, this.formatDate(value));
-        } else {
-          formData.append(key, value);
-        }
-      }
-    }
-
-    // Append image if selected
-    if (this.selectedFile) {
-      formData.append('user_image', this.selectedFile);
-    }
+  // updateRecord(event: Event): void {
+  //   event.preventDefault();
+  //   this.isLoading = true;
+  //   this.globalError = '';
   
-    this.http.post(`${this.API_URL}/users`, formData).subscribe({
-      next: (response) => {
-        this.isLoading = false;
-        this.router.navigate(['/users']);
-      },
-      error: (error) => {
-        this.isLoading = false;
-        this.formErrors = error.error.errors || {};
+  //   const formData = new FormData();
   
-        // Show global error
-        this.globalErrorMessage = 'Please fill all required fields correctly.';
+  //   // Add the form data
+  //   const entries = Object.entries(this.currentRecord) as [keyof User, any][];
+  //   for (const [key, value] of entries) {
+  //     if (value !== null && value !== undefined && value !== '') {
+  //       if (key === 'date_of_birth') {
+  //         formData.append(key, this.formatDate(value));
+  //       } else {
+  //         formData.append(key, value);
+  //       }
+  //     }
+  //   }
   
-        // Scroll to top
-        window.scrollTo({ top: 0, behavior: 'smooth' });
-      }
-    });
-  }
+  //   // Check if the file is selected and append it
+  //   if (this.selectedFile) {
+  //     formData.append('user_image', this.selectedFile);
+  //   }
+  
+  //   // Proceed with the API request to update employee data
+  //   this.http.post(`${this.API_URL}/users`, formData).subscribe({
+  //     next: (response) => {
+  //       this.isLoading = false;
+  //       this.router.navigate(['/users']);
+  //     },
+  //     error: (error) => {
+  //       this.isLoading = false;
+  //       // Check if the error is related to a duplicate value like code, email, etc.
+  //       if (error?.error?.errors) {
+  //         this.formErrors = error.error.errors;
+  //       }
+  //     }
+  //   });
+  // }
 
   updateRecord(event: Event): void {
     event.preventDefault();
     this.isLoading = true;
   
     const formData = new FormData();
-    console.log(formData)
     const entries = Object.entries(this.currentRecord) as [keyof User, any][];
   
     for (const [key, value] of entries) {
@@ -251,10 +279,10 @@ export class UsersSetupComponent {
     }
   
     // Proceed with the API request to update user data
-    this.http.post(`${this.API_URL}/users`, formData).subscribe({
+    this.http.post(`${this.API_URL}/users/${this.currentRecord.id}?_method=PUT`, formData).subscribe({
       next: (response) => {
         this.isLoading = false;
-        this.router.navigate(['/users']);
+        this.successMessage = 'Record updated successfully!';
       },
       error: (error) => {
         this.isLoading = false;
@@ -267,35 +295,35 @@ export class UsersSetupComponent {
   }
 
   // Add this error handling method
-  private handleError(error: any): void {
-    if (error.error?.errors) {
-      // Format errors to match what the template expects
-      this.formErrors = error.error.errors;
-    } else if (error.error?.message) {
-      this.errorMessage = error.error.message;
-    } else {
-      this.errorMessage = 'An unknown error occurred';
-    }
+  // private handleError(error: any): void {
+  //   if (error.error?.errors) {
+  //     // Format errors to match what the template expects
+  //     this.formErrors = error.error.errors;
+  //   } else if (error.error?.message) {
+  //     this.errorMessage = error.error.message;
+  //   } else {
+  //     this.errorMessage = 'An unknown error occurred';
+  //   }
     
-    // Scroll to the first error
-    setTimeout(() => {
-      const firstErrorElement = document.querySelector('.text-danger');
-      if (firstErrorElement) {
-        firstErrorElement.scrollIntoView({ behavior: 'smooth', block: 'center' });
-      }
-    }, 100);
-  }
+  //   // Scroll to the first error
+  //   setTimeout(() => {
+  //     const firstErrorElement = document.querySelector('.text-danger');
+  //     if (firstErrorElement) {
+  //       firstErrorElement.scrollIntoView({ behavior: 'smooth', block: 'center' });
+  //     }
+  //   }, 100);
+  // }
 
   // Convert to yyyy-mm-dd string for backend
-  private formatDateForBackend(date: NgbDateStruct | string | undefined): string | null {
-    if (!date) return null;
+  // private formatDateForBackend(date: NgbDateStruct | string | undefined): string | null {
+  //   if (!date) return null;
     
-    // If already a string, return it directly
-    if (typeof date === 'string') return date;
+  //   // If already a string, return it directly
+  //   if (typeof date === 'string') return date;
     
-    // If NgbDateStruct, format it
-    return `${date.year}-${date.month.toString().padStart(2, '0')}-${date.day.toString().padStart(2, '0')}`;
-  }
+  //   // If NgbDateStruct, format it
+  //   return `${date.year}-${date.month.toString().padStart(2, '0')}-${date.day.toString().padStart(2, '0')}`;
+  // }
 
   // Convert from backend string to NgbDateStruct
   private parseDateFromBackend(dateString: string | undefined): NgbDateStruct | null {

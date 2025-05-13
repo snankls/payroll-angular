@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { RouterLink, ActivatedRoute, Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { FormsModule } from '@angular/forms';
 import { ColumnMode, NgxDatatableModule } from '@siemens/ngx-datatable';
 import { NgbDateStruct, NgbDatepickerModule } from '@ng-bootstrap/ng-bootstrap';
@@ -262,9 +262,18 @@ export class LoansSetupComponent {
         this.checkAmounts();
         this.isEditMode = true;
       },
-      error: (error) => {
-        console.error('Error loading loan:', error);
-      }
+      error: (error: HttpErrorResponse) => {
+        this.isLoading = false;
+        
+        if (error.status === 403) {
+          this.router.navigate(['/dashboard']);
+        } else if (error.status === 404) {
+          this.errorMessage = 'Loan record not found';
+        } else {
+          this.errorMessage = 'Failed to load loan details';
+          console.error('Error loading loan:', error);
+        }
+      },
     });
   }
 

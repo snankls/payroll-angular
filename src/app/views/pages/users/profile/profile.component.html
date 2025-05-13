@@ -12,11 +12,11 @@
             </tr>
             <tr>
               <td>Last Name</td>
-              <td>{{ currentRecord.last_name }}</td>
+              <td>{{ currentRecord.last_name ? currentRecord.last_name : 'N/A' }}</td>
             </tr>
             <tr>
               <td>Username</td>
-              <td>{{ currentRecord.username }}</td>
+              <td>{{ currentRecord.username ? currentRecord.username : 'N/A' }}</td>
             </tr>
             <tr>
               <td>Email Address</td>
@@ -24,23 +24,23 @@
             </tr>
             <tr>
               <td>Gender</td>
-              <td>{{ currentRecord.gender }}</td>
+              <td>{{ currentRecord.gender ? currentRecord.gender : 'N/A' }}</td>
             </tr>
             <tr>
               <td>Phone Number</td>
-              <td>{{ currentRecord.phone_number }}</td>
+              <td>{{ currentRecord.phone_number ? currentRecord.phone_number : 'N/A' }}</td>
             </tr>
             <tr>
               <td>Date of Birth</td>
-              <td>{{ currentRecord.date_of_birth | date:'yyyy-MM-dd' }}</td>
+              <td>{{ currentRecord.date_of_birth ? (currentRecord.date_of_birth | date:'yyyy-MM-dd') : 'N/A' }}</td>
             </tr>
             <tr>
               <td>City</td>
-              <td>{{ currentRecord.city_name }}</td>
+              <td>{{ currentRecord.city_name ? currentRecord.city_name : 'N/A' }}</td>
             </tr>
             <tr>
               <td>Address</td>
-              <td>{{ currentRecord.address }}</td>
+              <td>{{ currentRecord.address ? currentRecord.address : 'N/A' }}</td>
             </tr>
             <tr>
               <td>Status</td>

@@ -92,28 +92,27 @@
                         </td>
                         <td>
                           <ng-select
-    [items]="asset_types"
-    bindLabel="name"
-    bindValue="composite_id"
-    [(ngModel)]="itemsList[i].composite_id"
-    name="asset_type_id_{{ i }}"
-    placeholder="Select One"
-    [appendTo]="'body'"
-    [ngModelOptions]="{ standalone: true }"
-    (change)="onAssetTypeChange(itemsList[i], i)"
-    [compareWith]="compareWithFn"
-    [loading]="!asset_types?.length"
-    [clearable]="false">
-    <ng-template ng-label-tmp let-item="item">
-        {{ item?.name }} ({{ item?.description }})
-    </ng-template>
-    <ng-template ng-option-tmp let-item="item">
-        {{ item?.name }} ({{ item?.description }})
-        <span *ngIf="isAssetTypeUsed(item.composite_id, i)" class="text-muted">
-            (Already selected)
-        </span>
-    </ng-template>
-</ng-select>
+                            [items]="asset_types"
+                            bindLabel="name"
+                            bindValue="composite_id"
+                            [(ngModel)]="itemsList[i].composite_id"
+                            name="asset_type_id_{{ i }}"
+                            placeholder="Select One"
+                            [appendTo]="'body'"
+                            [ngModelOptions]="{ standalone: true }"
+                            (change)="onAssetTypeChange(itemsList[i], i)"
+                            [compareWith]="compareWithFn"
+                            [clearable]="false">
+                            <ng-template ng-label-tmp let-item="item">
+                                {{ item?.name }} ({{ item?.description }})
+                            </ng-template>
+                            <ng-template ng-option-tmp let-item="item">
+                                {{ item?.name }} ({{ item?.description }})
+                                <span *ngIf="isAssetTypeUsed(item.composite_id, i)" class="text-muted">
+                                    (Already selected)
+                                </span>
+                            </ng-template>
+                        </ng-select>
                         </td>
                         <td>
                           <textarea

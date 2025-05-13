@@ -5,7 +5,23 @@ import { AuthGuard } from './auth/auth.guard';
 export const routes: Routes = [
   {
     path: 'login',
-    loadComponent: () => import('./views/pages/login/login.component').then(c => c.LoginComponent)
+    loadComponent: () => import('./views/pages/auth/login/login.component').then(c => c.LoginComponent),
+    data: { title: 'Login' },
+  },
+  {
+    path: 'auth/forgot-password',
+    loadComponent: () => import('./views/pages/auth/forgot-password/forgot-password.component').then(c => c.ForgotPasswordComponent),
+    data: { title: 'Forgot Password' },
+  },
+  {
+    path: 'auth/verify-account/:token',
+    loadComponent: () => import('./views/pages/auth/verify-account/verify-account.component').then(c => c.VerifyAccountComponent),
+    data: { title: 'Verify Account' },
+  },
+  {
+    path: 'auth/change-password/:token',
+    loadComponent: () => import('./views/pages/auth/change-password/change-password.component').then(c => c.ChangePasswordComponent),
+    data: { title: 'Change Password' },
   },
   {
     path: '',
@@ -264,34 +280,10 @@ export const routes: Routes = [
         canActivate: [AuthGuard]
       },
 
-      // Companies
-      {
-        path: 'companies',
-        loadComponent: () => import('./views/pages/companies/companies.component').then(c => c.CompaniesComponent),
-        data: { title: 'Companies' },
-        canActivate: [AuthGuard]
-      },
-
-      // Users
-      {
-        path: 'users',
-        loadComponent: () => import('./views/pages/users/users.component').then(c => c.UsersComponent),
-        data: { title: 'Users' },
-        canActivate: [AuthGuard]
-      },
-
-      // Users Add
-      {
-        path: 'users/add',
-        loadComponent: () => import('./views/pages/users/setup/setup.component').then(c => c.UsersSetupComponent),
-        data: { title: 'Users Add' },
-        canActivate: [AuthGuard]
-      },
-
       // Users Edit
       {
         path: 'users/edit/:id',
-        loadComponent: () => import('./views/pages/users/setup/setup.component').then(c => c.UsersSetupComponent),
+        loadComponent: () => import('./views/pages/users/edit/edit.component').then(c => c.UsersEditComponent),
         data: { title: 'Users Edit' },
         canActivate: [AuthGuard]
       },

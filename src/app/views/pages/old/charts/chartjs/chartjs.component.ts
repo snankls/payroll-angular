@@ -2,7 +2,7 @@ import { Component, inject } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { ChartConfiguration, ChartData, ChartType } from 'chart.js';
 import { BaseChartDirective, provideCharts, withDefaultRegisterables } from 'ng2-charts';
-import { ThemeCssVariableService } from '../../services/theme-css-variable.service';
+import { ThemeCssVariableService } from '../../../../services/theme-css-variable.service';
 
 @Component({
   selector: 'app-chartjs',

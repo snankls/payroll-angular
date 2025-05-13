@@ -1,22 +1,44 @@
 import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpErrorResponse } from '@angular/common/http';
+import { ActivatedRoute, Router } from '@angular/router';
 import { NgbDropdownModule, NgbNavContent, NgbNavModule, NgbTooltip, NgbNavOutlet } from '@ng-bootstrap/ng-bootstrap';
 import { BreadcrumbComponent } from '../../../layout/breadcrumb/breadcrumb.component';
 import { environment } from '../../../../environments/environment';
-import { ActivatedRoute } from '@angular/router';
 
-interface Employee {
-  id?: number | null;
-  full_name: string | null;
-  loan_amount: string;
-  issue_date: string;
-  status: number | null;
+// interface Employee {
+//   id?: number | null;
+//   full_name: string | null;
+//   loan_amount: string;
+//   issue_date: string;
+//   status: number | null;
+//   description?: string;
+//   slug?: string;
+//   employee?: {
+//     full_name: string;
+//   };
+// }
+
+interface LoanDetail {
+  id: number;
+  return_date: string;
+  return_amount: string;
+  return_status: string;
+  // Optional properties from the response if needed
+  loan_id?: number;
+  item_id?: number;
   description?: string;
-  slug?: string;
-  employee?: {
-    full_name: string;
-  };
+  status?: string;
+}
+
+interface LoanResponse {
+  id: number;
+  employee_id: number;
+  loan_date: string;
+  return_date?: string;
+  status: string;
+  description?: string;
+  details: LoanDetail[];
 }
 
 @Component({
@@ -54,32 +76,72 @@ export class LoansViewComponent {
     return_status: string;
   }[] = [];
   
+  isLoading = false;
+  errorMessage = '';
+
   rows: any[] = [];
   loadingIndicator = false;
   company_asset_status: string = '';
   imagePreview: string | ArrayBuffer | null = null;
 
   constructor(
-      private http: HttpClient,
-      private route: ActivatedRoute,
-    ) {}
+    private http: HttpClient,
+    private route: ActivatedRoute,
+    private router: Router
+  ) {}
 
   ngOnInit(): void {
     // Handle id-based route
     this.route.paramMap.subscribe(params => {
       const id = params.get('id');
       if (id) {
-        this.loadCompanyAssets(+id);
+        this.loadLoan(+id);
       }
     });
   }
 
-  loadCompanyAssets(id: number) {
-    this.http.get<any>(`${this.API_URL}/loans/${id}`).subscribe(response => {
-      this.currentRecord = response;
-      
-      // ✅ Assign items list
-      this.itemsList = response.details || [];
+  loadLoan(id: number): void {
+    this.isLoading = true;
+    this.errorMessage = '';
+    this.itemsList = [];
+
+    this.http.get<LoanResponse>(`${this.API_URL}/loans/${id}`).subscribe({
+      next: (response) => {
+        this.currentRecord = {
+          ...response,
+          // loan_date: typeof response.loan_date === 'string' 
+          //   ? this.parseDate(response.loan_date) 
+          //   : response.loan_date,
+          // return_date: response.return_date && typeof response.return_date === 'string'
+          //   ? this.parseDate(response.return_date)
+          //   : response.return_date
+        };
+
+        this.itemsList = response.details?.map(detail => ({
+          ...detail,
+          isSelected: true
+        })) || [];
+
+        // If you need to fetch additional related data
+        // if (this.currentRecord.employee_id) {
+        //   this.fetchEmployeeDetails(this.currentRecord.employee_id);
+        // }
+      },
+      error: (error: HttpErrorResponse) => {
+        this.isLoading = false;
+        
+        if (error.status === 403) {
+          this.router.navigate(['/dashboard']);
+        } else if (error.status === 404) {
+          this.errorMessage = 'Loan record not found';
+        } else {
+          this.errorMessage = 'Failed to load loan details';
+          console.error('Error loading loan:', error);
+        }
+      },
+      complete: () => {
+        this.isLoading = false;
+      }
     });
   }
 
