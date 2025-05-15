@@ -11,6 +11,15 @@ export const MENU: MenuItem[] = [
     link: '/dashboard'
   },
   {
+    label: 'Companies',
+    isTitle: true
+  },
+  {
+    label: 'Company',
+    icon: 'users',
+    link: '/companies',
+  },
+  {
     label: 'Employees',
     isTitle: true
   },
@@ -66,16 +75,8 @@ export const MENU: MenuItem[] = [
     icon: 'file-text',
     subItems: [
       {
-        label: 'Banks',
-        link: '/reports/banks',
-      },
-      {
-        label: 'Cities',
-        link: '/reports/cities'
-      },
-      {
-        label: 'Users',
-        link: '/report/users'
+        label: 'Salaries',
+        link: '/reports/salaries',
       },
     ]
   },

@@ -462,7 +462,6 @@ export class CompanyAssetsSetupComponent {
     this.cdr.detectChanges();
     
     // Debug output
-    console.log('Updated itemsList:', this.itemsList);
     console.log('Matching check:', 
         this.itemsList.map(item => ({
             item: item.composite_id,

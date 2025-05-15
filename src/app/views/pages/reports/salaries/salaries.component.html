@@ -1,0 +1,106 @@
+<app-breadcrumb></app-breadcrumb>
+
+<!-- <div class="row">
+  <div class="col-md-12 stretch-card">
+    <div class="card">
+      <div class="card-body">
+        <form class="row mb-3" (submit)="onAdvancedSearch($event)">
+          <div class="row">
+            <div class="col-md-3">
+              <label class="form-label">Full Name</label>
+              <input type="text" class="form-control form-control-sm" [(ngModel)]="searchModel.full_name" name="full_name" />
+            </div>
+          
+            <div class="col-md-3">
+              <label class="form-label">Email</label>
+              <input type="email" class="form-control form-control-sm" [(ngModel)]="searchModel.email" name="email" />
+            </div>
+          
+            <div class="col-md-3">
+              <label class="form-label">Status</label>
+              <ng-select
+                [items]="status"
+                bindLabel="name"
+                bindValue="id"
+                [(ngModel)]="searchModel.status"
+                name="status"
+                placeholder="Select"
+              >
+              </ng-select>
+            </div>
+          
+            <div class="col-12 mt-3">
+              <button class="btn btn-primary btn-sm me-2" type="submit">Search</button>
+              <button class="btn btn-secondary btn-sm" type="button" (click)="resetSearch()">Reset</button>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div> -->
+
+<div class="row mt-4">
+  <div class="col-md-12 stretch-card">
+    <div class="card">
+      <div class="card-body">
+        
+        <div class="text-end mb-3">
+          <button class="btn btn-success btn-sm me-2" (click)="downloadFile('excel')"><i class="feather icon-download-cloud"></i> Download Excel</button>
+          <button class="btn btn-danger btn-sm" (click)="downloadFile('pdf')"><i class="feather icon-download-cloud"></i> Download PDF</button>
+        </div>
+        
+        <div class="table-responsive">
+          <ngx-datatable
+            #table
+            class="bootstrap"
+            [rows]="rows"
+            [loadingIndicator]="loadingIndicator"
+            [columnMode]="ColumnMode.force"
+            [footerHeight]="50"
+            [limit]="10"
+            rowHeight="auto"
+            [scrollbarH]="true"
+          >
+            
+            <ngx-datatable-column name="ID/Code">
+              <ng-template ngx-datatable-cell-template let-row="row">
+                {{ row.code }}
+              </ng-template>
+            </ngx-datatable-column>
+
+            <ngx-datatable-column name="Employee Name">
+              <ng-template ngx-datatable-cell-template let-row="row">
+                {{ row.employee_name }}
+              </ng-template>
+            </ngx-datatable-column>
+            
+            <ngx-datatable-column name="Days">
+              <ng-template ngx-datatable-cell-template let-row="row">
+                {{ row.attendance_days }}
+              </ng-template>
+            </ngx-datatable-column>
+            
+            <ngx-datatable-column name="Total Salary">
+              <ng-template ngx-datatable-cell-template let-row="row">
+                {{ row.salary	 }}
+              </ng-template>
+            </ngx-datatable-column>
+            
+            <ngx-datatable-column name="Loan">
+              <ng-template ngx-datatable-cell-template let-row="row">
+                {{ row.loan_deduction }}
+              </ng-template>
+            </ngx-datatable-column>
+            
+            <ngx-datatable-column name="Net Salary">
+              <ng-template ngx-datatable-cell-template let-row="row">
+                {{ row.net_salary }}
+              </ng-template>
+            </ngx-datatable-column>
+          </ngx-datatable>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

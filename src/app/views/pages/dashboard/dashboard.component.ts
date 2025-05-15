@@ -54,7 +54,6 @@ export class DashboardComponent implements OnInit {
   getDashboardCounter(): void {
     this.http.get<any[]>(`${this.API_URL}/dashboard`).subscribe({
       next: (response: any[]) => {
-        console.log(response);
         this.dashboardData = response;
       },
       error: (error) => {

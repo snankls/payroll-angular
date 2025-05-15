@@ -31,7 +31,6 @@ export class AuthService {
     );
   }
 
-  // auth.service.ts
   loadCurrentUser(): Observable<any> {
     return this.http.get<any>(`${this.API_URL}/current-user`).pipe(
       tap({

@@ -7,26 +7,6 @@
         <form class="forms-sample" (submit)="updateRecord($event)">
           <input type="hidden" name="update_id" [(ngModel)]="currentRecord.id">
           <div class="row">
-            <div class="col-md-6 mb-3">
-              <label class="form-label">Select Company <span class="text-danger">*</span></label>
-              <input type="text" class="form-control" name="company_name" [(ngModel)]="currentRecord.company_name" readonly *ngIf="user?.role_id !== 1">
-
-              <ng-select
-                *ngIf="user?.role_id === 1"
-                [items]="companies"
-                bindLabel="name"
-                bindValue="id"
-                [(ngModel)]="currentRecord.company_id"
-                name="company_id"
-                placeholder="Select one"
-                [searchable]="true"
-                (change)="clearError('company_id')"
-                [ngModelOptions]="{standalone: false}">
-              </ng-select>
-              <div class="text-danger mt-1" *ngIf="formErrors.company_id">
-                {{ formErrors.company_id[0] }}
-              </div>
-            </div>
             
             <div class="col-md-3 mb-3">
               <label class="form-label">First Name <span class="text-danger">*</span></label>

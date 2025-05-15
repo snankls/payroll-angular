@@ -40,6 +40,14 @@ export const routes: Routes = [
         canActivate: [AuthGuard]
       },
 
+      // Companies
+      {
+        path: 'companies',
+        loadComponent: () => import('./views/pages/companies/setup.component').then(c => c.CompaniesSetupComponent),
+        data: { title: 'Companies' },
+        canActivate: [AuthGuard]
+      },
+
       // Employees
       {
         path: 'employees',
@@ -154,9 +162,9 @@ export const routes: Routes = [
 
       // Reports
       {
-        path: 'report/users',
-        loadComponent: () => import('./views/pages/reports/users/users.component').then(c => c.ReportsUsersComponent),
-        data: { title: 'Users Reports' },
+        path: 'reports/salaries',
+        loadComponent: () => import('./views/pages/reports/salaries/salaries.component').then(c => c.ReportsSalariesComponent),
+        data: { title: 'Salaries Reports' },
         canActivate: [AuthGuard]
       },
 
@@ -236,7 +244,7 @@ export const routes: Routes = [
       {
         path: 'loans',
         loadComponent: () => import('./views/pages/loans/loans.component').then(c => c.LoansComponent),
-        data: { title: 'loans' },
+        data: { title: 'Loans' },
         canActivate: [AuthGuard]
       },
 
@@ -301,6 +309,14 @@ export const routes: Routes = [
         path: 'change-password',
         loadComponent: () => import('./views/pages/users/change-password/change-password.component').then(c => c.ChangePasswordComponent),
         data: { title: 'Change Password' },
+        canActivate: [AuthGuard]
+      },
+
+      // Payment Details
+      {
+        path: 'payment-details',
+        loadComponent: () => import('./views/pages/payment-details/payment-details.component').then(c => c.PaymentDetailsComponent),
+        data: { title: 'Payment Details' },
         canActivate: [AuthGuard]
       },
 
