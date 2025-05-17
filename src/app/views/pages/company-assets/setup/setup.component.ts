@@ -206,7 +206,7 @@ export class CompanyAssetsSetupComponent {
   parseDate(dateString: string): NgbDateStruct {
     const [year, month, day] = dateString.split('-').map(Number);
     return { year, month, day };
-  }  
+  }
 
   clearItemError(index: number, key: 'asset_type_id' | 'description') {
     const errorKey = `items.${index}.${key}`;

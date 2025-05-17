@@ -1,10 +1,14 @@
 import { Component, OnInit, TemplateRef } from '@angular/core';
+import { CommonModule } from '@angular/common';
 import { Router, RouterLink } from '@angular/router';
 import { NgbDropdownModule } from '@ng-bootstrap/ng-bootstrap';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { HttpClient } from '@angular/common/http';
 import { ThemeModeService } from '../../services/theme-mode.service';
 import { AuthService } from '../../../auth/auth.service';
 import { environment } from '../../../environments/environment';
+import { catchError } from 'rxjs/operators';
+import { of } from 'rxjs';
 
 @Component({
   selector: 'app-navbar',
@@ -12,18 +16,22 @@ import { environment } from '../../../environments/environment';
   imports: [
     NgbDropdownModule,
     RouterLink,
+    CommonModule
   ],
   templateUrl: './navbar.component.html',
 })
 export class NavbarComponent implements OnInit {
+  private API_URL = environment.API_URL;
   private IMAGE_URL = environment.IMAGE_URL;
   
+  showPin = false;
   user: any = null;
   currentTheme: string;
   imagePreview: string | ArrayBuffer | null = null;
   basicModalCloseResult: string = '';
 
   constructor(
+    private http: HttpClient,
     private authService: AuthService,
     private router: Router,
     private themeModeService: ThemeModeService,
@@ -41,6 +49,25 @@ export class NavbarComponent implements OnInit {
         this.user = null;
       }
     });
+  }
+
+  togglePinVisibility() {
+    this.showPin = !this.showPin;
+  }
+
+  generatePin() {
+    this.http.post<{ pin_code: string }>(`${this.API_URL}/users/generate-pin`, {})
+      .pipe(
+        catchError(err => {
+          console.error('Error generating pin:', err);
+          return of(null);
+        })
+      )
+      .subscribe(res => {
+        if (res?.pin_code) {
+          this.user.pin_code = res.pin_code;
+        }
+      });
   }
 
   openBasicModal(content: TemplateRef<any>) {

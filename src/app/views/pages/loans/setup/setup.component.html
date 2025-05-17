@@ -26,11 +26,6 @@
               </div>
             </div>
 
-            <!-- <div class="col-md-3 mb-3">
-              <label class="form-label">Loan Amount <span class="text-danger">*</span></label>
-              <input type="text" class="form-control" name="loan_amount" [(ngModel)]="currentRecord.loan_amount" (ngModelChange)="clearError('loan_amount')">
-              <div class="text-danger mt-1" *ngIf="formErrors.loan_amount">{{ formErrors.loan_amount[0] }}</div>
-            </div> -->
             <div class="col-md-3 mb-3">
               <label class="form-label">Loan Amount <span class="text-danger">*</span></label>
               <input type="number" class="form-control" name="loan_amount" 
@@ -121,17 +116,11 @@
                           </div>
                         </td>
                         <td>
-                          <!-- <input type="text" 
-                            class="form-control" 
-                            [(ngModel)]="item.return_amount"
-                            name="return_amount_{{i}}"
-                            (input)="onReturnAmountChange(i)"
-                          /> -->
                           <input type="number" class="form-control" 
-       [(ngModel)]="item.return_amount"
-       name="return_amount_{{i}}"
-       (input)="onReturnAmountChange(i)"
-       step="0.01">
+                          [(ngModel)]="item.return_amount"
+                          name="return_amount_{{i}}"
+                          (input)="onReturnAmountChange(i)"
+                          step="0.01">
                         </td>
                         <td>
                           <ng-select 

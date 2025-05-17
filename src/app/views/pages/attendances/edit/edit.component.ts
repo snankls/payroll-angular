@@ -129,7 +129,6 @@ export class AttendancesEditComponent {
     const params = { month: currentMonth, year: currentYear };
 
     this.http.get<any>(`${this.API_URL}/attendances/${id}/detail`, { params }).subscribe(response => {
-      console.log('load attendance:', response)
       this.currentRecord = {
         id: id,
         employee: response.employee,
@@ -355,7 +354,6 @@ export class AttendancesEditComponent {
 
     this.http.put(`${this.API_URL}/attendances/${this.currentRecord.id}`, payload).subscribe({
       next: (response) => {
-        console.log('Attendance updated successfully:', response);
         this.isLoading = false;
         this.router.navigate(['/attendances']);
       },

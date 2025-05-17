@@ -312,6 +312,22 @@ export const routes: Routes = [
         canActivate: [AuthGuard]
       },
 
+      // Support
+      {
+        path: 'support',
+        loadComponent: () => import('./views/pages/support/support.component').then(c => c.SupportComponent),
+        data: { title: 'Support' },
+        canActivate: [AuthGuard]
+      },
+
+      // Documentation
+      {
+        path: 'documentation',
+        loadComponent: () => import('./views/pages/documentation/documentation.component').then(c => c.DocumentationComponent),
+        data: { title: 'Documentation' },
+        canActivate: [AuthGuard]
+      },
+
       // Payment Details
       {
         path: 'payment-details',

@@ -183,7 +183,6 @@ export class AttendancesAddComponent {
     }
 
     this.monthYearOptions = options;
-    console.log('Generated month options:', this.monthYearOptions); // Debug log
   }
 
   onMonthSelect(): void {
@@ -240,7 +239,6 @@ export class AttendancesAddComponent {
     }
 
     this.attendanceDetails = days;
-    console.log('Loaded attendanceDetails:', this.attendanceDetails);
   }
 
   calculateDuration(checkIn: any, checkOut: any): string {
@@ -295,7 +293,7 @@ export class AttendancesAddComponent {
 
     this.http.post(`${this.API_URL}/attendances`, payload).subscribe({
       next: (response) => {
-        this.router.navigate(['/employees']);
+        this.router.navigate(['/attendances']);
         this.isLoading = false;
       },
       error: (error) => {

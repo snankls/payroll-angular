@@ -113,7 +113,6 @@ export class CitiesComponent implements OnInit {
   fetchCities(): void {
     this.http.get<City[]>(`${this.API_URL}/cities`).subscribe({
       next: (response) => {
-        console.log(response)
         this.rows = response;
         this.temp = [...response];
         this.loadingIndicator = false;

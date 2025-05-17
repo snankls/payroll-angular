@@ -49,17 +49,16 @@ export class SalaryWizardsComponent implements OnInit {
   @ViewChild('wizardForm') wizardForm!: BaseWizardComponent;
 
   wizardStep = 1;
-  //selectedMonthYear: string = null;
   employeesWithAttendance: Employee[] = [];
   employeeSalaries: Salary[] = [];
-  monthYearOptions: { id: string, label: string }[] = [];
+  monthYearOptions: { label: string; value: string }[] = [];
+  selectedMonthYear: string | null = null;
   total_days_in_month: number = 0;
   total_working_days: number = 0;
   attendance_days: number = 0;
   total_salary: number = 0;
   loan_deduction: number = 0;
   submitted = false;
-  selectedMonthYear: string | null = null;
   validationForm1: UntypedFormGroup;
 
   constructor(
@@ -70,6 +69,7 @@ export class SalaryWizardsComponent implements OnInit {
   
   ngOnInit(): void {
     this.getMonth2();
+    
     this.validationForm1 = this.formBuilder.group({
       month_year: [null, Validators.required],
     });
@@ -77,26 +77,11 @@ export class SalaryWizardsComponent implements OnInit {
 
   // Update getMonth2
   getMonth2() {
-    this.http.get<{ joining_date: string }>(`${this.API_URL}/salary-wizard/get-months`)
-    .subscribe((res) => {
-      const startDate = new Date(res.joining_date);
-      const endDate = new Date();
-      this.monthYearOptions = this.generateMonthYearList(startDate, endDate);
-      // No default selection - leave selectedMonthYear as null
-    });
+    this.http.get<{ label: string; value: string }[]>(`${this.API_URL}/get-months`)
+      .subscribe((res) => {
+        this.monthYearOptions = res;
+      });
   }
-
-  // Update goToNext
-  // goToNext() {
-  //   this.submitted = true;
-  //   this.validationForm1.get('month_year')?.setValue(this.selectedMonthYear);
-  //   this.validationForm1.markAllAsTouched();
-    
-  //   if (this.validationForm1.valid) {
-  //     this.fetchEmployeesWithAttendance(this.selectedMonthYear!);
-  //     this.wizardForm.goToNextStep();
-  //   }
-  // }
 
   // Update onMonthSelect
   onMonthSelect(event: any) {
@@ -124,7 +109,6 @@ export class SalaryWizardsComponent implements OnInit {
     return options;
   }
 
-
   // Update the fetchEmployeesWithAttendance method to handle null
   fetchEmployeesWithAttendance(monthYear: string | null) {
     if (!monthYear) {
@@ -145,86 +129,8 @@ export class SalaryWizardsComponent implements OnInit {
     });
   }
 
-  // Update nextStep to handle null case
-  // nextStep() {
-  //   if (!this.selectedMonthYear) {
-  //     console.error('No month selected');
-  //     return;
-  //   }
-
-  //   if (this.wizardStep === 1) {
-  //     this.fetchEmployeesWithAttendance(this.selectedMonthYear);
-  //   } else if (this.wizardStep === 2) {
-  //     //this.calculateSalaries(this.selectedMonthYear);
-  //   }
-  //   this.wizardStep++;
-  // }
-
-  // Add null check to calculateSalaries (if you use it)
-  // calculateSalaries(monthYear: string | null) {
-  //   if (!monthYear) {
-  //     console.error('No month selected');
-  //     return;
-  //   }
-    
-  //   const month = this.getMonth(monthYear);
-  //   const year = this.getYear(monthYear);
-
-  //   this.http.post<any[]>(`${this.API_URL}/salaries/calculate`, {
-  //     month,
-  //     year
-  //   }).subscribe((res) => {
-  //     this.employeeSalaries = res;
-  //   });
-  // }
-
-  // nextStep() {
-  //   if (this.wizardStep === 1) {
-  //     this.fetchEmployeesWithAttendance(this.selectedMonthYear);
-  //   } else if (this.wizardStep === 2) {
-  //     this.calculateSalaries(this.selectedMonthYear);
-  //   }
-  //   this.wizardStep++;
-  // }
-
-//   goToNext() {
-//   this.validationForm1.get('month_year')?.setValue(this.selectedMonthYear);
-//   this.validationForm1.markAllAsTouched();
-  
-//   if (this.validationForm1.valid) {
-//     this.fetchEmployeesWithAttendance(this.selectedMonthYear);
-//     this.wizardForm.goToNextStep();
-//   }
-// }
-
-  // fetchEmployeesWithAttendance(monthYear: string) {
-  //   const month = this.getMonth(monthYear);
-  //   const year = this.getYear(monthYear);
-
-  //   // Set total days in month (for salary calc)
-  //   this.total_days_in_month = new Date(year, month, 0).getDate();
-
-  //   this.http.get<any>(`${this.API_URL}/salary-wizard`, {
-  //     params: { month, year }
-  //   }).subscribe((res) => {
-  //     this.employeesWithAttendance = res.employees;
-  //   });
-  // }
-
-  // calculateSalaries(monthYear: string) {
-  //   const month = this.getMonth(monthYear);
-  //   const year = this.getYear(monthYear);
-
-  //   this.http.post<any[]>(`${this.API_URL}/salaries/calculate`, {
-  //     month,
-  //     year
-  //   }).subscribe((res) => {
-  //     this.employeeSalaries = res;
-  //   });
-  // }
-
   goToStep(stepIndex: number) {
-    this.wizardStep = stepIndex + 1; // Update the step counter if you're using it
+    this.wizardStep = stepIndex + 1;
     this.wizardForm.goToStep(stepIndex);
   }
 
@@ -236,7 +142,7 @@ export class SalaryWizardsComponent implements OnInit {
     
     if (this.validationForm1.valid) {
       this.fetchEmployeesWithAttendance(this.selectedMonthYear!);
-      this.goToStep(1); // Go to step 2 (index 1)
+      this.goToStep(1);
     }
   }
 
@@ -265,20 +171,6 @@ export class SalaryWizardsComponent implements OnInit {
     });
   }
 
-  // finish() {
-  //   // Add any final submission logic here
-  //   console.log('Process finished');
-    
-  //   this.router.navigate(['/report/salaries']);
-  //   // You might want to:
-  //   // 1. Submit the data
-  //   // 2. Navigate to another page
-  //   // 3. Show a success message
-  //   // Example:
-  //   // this.submitSalaries();
-  //   // this.router.navigate(['/salaries']);
-  // }
-
   getTotalSalary(): number {
     return this.employeesWithAttendance.reduce((total, emp) => {
       return total + ((emp.attendance_days / this.total_days_in_month) * emp.total_salary);
@@ -295,14 +187,6 @@ export class SalaryWizardsComponent implements OnInit {
     return this.getTotalSalary() - this.getTotalLoan();
   }
 
-  // goBack() {
-  //   this.wizardForm.goToStep(0); // Goes back to step 1 (index 0)
-  // }
-
-  // goNext() {
-  //   this.wizardForm.goToStep(2); // Goes to step 3 (index 2)
-  // }
-
   getMonth(monthYear: string) {
     return parseInt(monthYear.split('-')[1]);
   }
@@ -310,11 +194,5 @@ export class SalaryWizardsComponent implements OnInit {
   getYear(monthYear: string) {
     return parseInt(monthYear.split('-')[0]);
   }
-
-  // onMonthSelect(event: any) {
-  //   this.selectedMonthYear = event.id;
-  //   // Update the form control value when selection changes
-  //   this.validationForm1.get('month_year')?.setValue(this.selectedMonthYear);
-  // }
 
 }

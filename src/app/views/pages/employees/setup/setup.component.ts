@@ -276,32 +276,6 @@ export class EmployeesSetupComponent {
     });
   }
 
-  // loadEmployee(id: number) {
-  //   this.http.get<Employee>(`${this.API_URL}/employee/${id}`).subscribe(employee => {
-  //     this.currentRecord = {
-  //       ...this.currentRecord,
-  //       ...employee,
-        
-  //       date_of_birth: this.parseDateFromBackend(
-  //         typeof employee.date_of_birth === 'string' ? employee.date_of_birth : undefined
-  //       ),
-  //       joining_date: this.parseDateFromBackend(
-  //         typeof employee.joining_date === 'string' ? employee.joining_date : undefined
-  //       ),
-  //       resign_date: this.parseDateFromBackend(
-  //         typeof employee.resign_date === 'string' ? employee.resign_date : undefined
-  //       ),
-  //     };
-  
-  //     if (employee.images && employee.images.image_name) {
-  //       this.imagePreview = `${this.IMAGE_URL}/uploads/employees/${employee.images.image_name}`;
-  //     }
-  
-  //     this.isEditMode = true;
-      
-  //   });
-  // }
-
   // Add these methods to your component class
   onFileSelected(event: Event): void {
     const input = event.target as HTMLInputElement;

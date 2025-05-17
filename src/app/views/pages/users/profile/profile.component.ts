@@ -20,6 +20,8 @@ export class ProfileComponent {
   private API_URL = environment.API_URL;
   private IMAGE_URL = environment.IMAGE_URL;
   
+  totalServiceCharges: number = 0;
+  itemsList: any = {} = [];
   currentRecord: any = {};
   loadingIndicator = true;
   isEditMode = false;
@@ -44,44 +46,28 @@ export class ProfileComponent {
     });
   }
 
-  loadUser(id: number) {
-    this.http.get<[]>(`${this.API_URL}/user/${id}`).subscribe({
-      next: (user) => {
-        this.currentRecord = {
-          ...this.currentRecord,
-          ...user,
-        };
-
-        // if (user.images?.image_name) {
-        //   this.imagePreview = `${this.IMAGE_URL}/uploads/users/${user.images.image_name}`;
-        // }
-      },
-      error: (error: HttpErrorResponse) => {
-        
-        if (error.status === 403 && error.error?.redirect) {
-          // Unauthorized access - redirect to dashboard
-          this.router.navigate(['/dashboard']);
-        } else if (error.status === 404) {
-        } else {
-          console.error('Error isLoading user:', error);
-        }
-      }
-    });
+  calculateTotalServiceCharges(): void {
+    this.totalServiceCharges = this.itemsList.reduce((sum: number, item: any) => {
+      const charge = parseFloat(item.service_charges) || 0;
+      return sum + charge;
+    }, 0);
   }
 
-  // loadUser(id: number) {
-  //   this.http.get<[]>(`${this.API_URL}/user/${id}`).subscribe(user => {
-  //     this.currentRecord = {
-  //       ...this.currentRecord,
-  //       ...user
-  //     };
-  
-  //     // if (user.images && user.images.image_name) {
-  //     //   this.imagePreview = `${this.IMAGE_URL}/uploads/users/${user.images.image_name}`;
-  //     // }
-  
-  //     this.isEditMode = true;
-  //   });
-  // }
+  loadUser(id: number) {
+    this.http.get<any>(`${this.API_URL}/user/${id}`).subscribe(user => {
+      this.currentRecord = user;
+      
+      this.itemsList = user.subscriptions || [];
+      this.calculateTotalServiceCharges();
+
+      // If user has image
+      if (user.user_image) {
+        this.imagePreview = `${this.IMAGE_URL}/uploads/users/${user.user_image}`;
+      }
+
+      this.isEditMode = true;
+      this.loadingIndicator = false;
+    });
+  }
 
 }
