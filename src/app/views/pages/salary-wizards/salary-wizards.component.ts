@@ -83,12 +83,6 @@ export class SalaryWizardsComponent implements OnInit {
       });
   }
 
-  // Update onMonthSelect
-  onMonthSelect(event: any) {
-    this.selectedMonthYear = event?.id || null;
-    this.validationForm1.get('month_year')?.setValue(this.selectedMonthYear || '');
-  }
-
   generateMonthYearList(startDate: Date, endDate: Date): { id: string, label: string }[] {
     const options: { id: string, label: string }[] = [];
 
@@ -139,7 +133,7 @@ export class SalaryWizardsComponent implements OnInit {
     this.submitted = true;
     this.validationForm1.get('month_year')?.setValue(this.selectedMonthYear);
     this.validationForm1.markAllAsTouched();
-    
+
     if (this.validationForm1.valid) {
       this.fetchEmployeesWithAttendance(this.selectedMonthYear!);
       this.goToStep(1);

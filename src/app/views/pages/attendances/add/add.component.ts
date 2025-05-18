@@ -50,17 +50,13 @@ export class AttendancesAddComponent {
   check_out = { hour: 17, minute: 0 };
   duration: string = '8h 0m';
   monthlyAttendance: any[] = [];
-  
   isMonthSelectDisabled = false;
-
   globalErrorMessage: string = '';
   isLoading = false;
   formErrors: any = {};
   employees: any[] = [];
   status: { id: string; name: string }[] = [];
   selectedEmployeeId: number | null = null;
-  
-
   attendance_status: { id: string; name: string }[] = [];
 
   constructor(
@@ -80,6 +76,9 @@ export class AttendancesAddComponent {
       { id: 'Absent', name: 'Absent' },
       { id: 'Late', name: 'Late' },
       { id: 'Half Day', name: 'Half Day' },
+      { id: 'Leave', name: 'Leave' },
+      { id: 'Rest', name: 'Rest' },
+      { id: 'Holiday', name: 'Holiday' },
     ];
   }
 

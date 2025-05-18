@@ -44,10 +44,11 @@ export class LoginComponent implements OnInit {
   email: string = '';
   password: string = '';
   rememberMe: boolean = false;
-  
+  chatVisible = false;
   errorMessage: string = '';
   loadingLogin: boolean = false;
   messageLogin: string = '';
+  contactInfo: string = '';
   messageTypeLogin: string = '';
 
   constructor(
@@ -58,6 +59,10 @@ export class LoginComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {}
+
+  toggleChat(): void {
+    this.chatVisible = !this.chatVisible;
+  }
 
   onSubmit(): void {
     const loginData = {
@@ -94,61 +99,17 @@ export class LoginComponent implements OnInit {
       },
       error: (error) => {
         this.loadingLogin = false;
-        this.messageLogin = error.error?.message || 'Login failed. Please try again.';
+
+        if (error.status === 403) {
+          this.messageLogin = error.error?.error || 'Access denied.';
+          this.contactInfo = error.error?.contact || '';
+        } else {
+          this.messageLogin = error.error?.message || 'Login failed. Please try again.';
+        }
+
         this.messageTypeLogin = 'error';
       }
     });
   }
-
-  // onSubmit() {
-  //   this.loadingLogin = true;
-  //   this.messageLogin = '';
-  //   this.errorMessage = '';
-  
-  //   const formData = {
-  //     email: this.email,
-  //     password: this.password,
-  //     remember_me: this.rememberMe
-  //   };
-  
-  //   this.http.post(`${this.API_URL}/login`, formData).subscribe({
-  //     next: (response: any) => {
-  //       this.loadingLogin = false;
-  
-  //       if (response.data?.authorisation?.token) {
-  //         this.authService.setToken(response.data.authorisation.token);
-  //         localStorage.setItem('token', response.data.authorisation.token);
-  
-  //         this.messageLogin = 'Login successful!';
-  
-  //         setTimeout(() => {
-  //           this.router.navigate(['/dashboard']);
-  //         }, 500);
-  //       } else {
-  //         this.messageLogin = 'Login failed. Please try again.';
-  //       }
-  //     },
-  //     error: (error) => {
-  //       this.loadingLogin = false;
-  //       console.error('❌ Login error:', error);
-  
-  //       if (error.error?.message) {
-  //         this.messageLogin = error.error.message;
-  //       } else if (error.status === 401) {
-  //         this.messageLogin = 'Invalid email or password.';
-  //       } else if (error.status === 403) {
-  //         this.messageLogin = 'Your account is disabled. Contact support.';
-  //       } else if (error.status === 422) {
-  //         this.messageLogin = 'Validation failed. Please check your input.';
-  //       } else if (error.status === 500) {
-  //         this.messageLogin = 'Server error. Please try again later.';
-  //       } else {
-  //         this.messageLogin = 'An unexpected error occurred. Please try again.';
-  //       }
-  
-  //       this.cdr.detectChanges();
-  //     }
-  //   });
-  // }
 
 }

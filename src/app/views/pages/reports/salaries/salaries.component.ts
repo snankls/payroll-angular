@@ -23,7 +23,7 @@ export class ReportsSalariesComponent {
   private API_URL = environment.API_URL;
   private LIVE_URL = environment.LIVE_URL;
   
-  monthYearOptions: { id: string, label: string }[] = [];
+  monthYearOptions: { label: string; value: string }[] = [];
   selectedMonthYear: string | null = null;
   employees: any[] = [];
   rows: any[] = [];
@@ -83,12 +83,10 @@ export class ReportsSalariesComponent {
   }
 
   getMonth2() {
-    this.http.get<{ joining_date: string }>(`${this.API_URL}/get-months`)
-    .subscribe((res) => {
-      const startDate = new Date(res.joining_date);
-      const endDate = new Date();
-      this.monthYearOptions = this.generateMonthYearList(startDate, endDate);
-    });
+    this.http.get<{ label: string; value: string }[]>(`${this.API_URL}/get-months`)
+      .subscribe((res) => {
+        this.monthYearOptions = res;
+      });
   }
 
   generateMonthYearList(startDate: Date, endDate: Date): { id: string, label: string }[] {

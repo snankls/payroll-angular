@@ -49,10 +49,15 @@ export class ForgotPasswordComponent implements OnInit {
   loading: boolean = false;
   message: string = '';
   messageType: string = '';
+  chatVisible = false;
   
   constructor(private http: HttpClient, private router: Router) {}
 
   ngOnInit(): void { }
+
+  toggleChat(): void {
+    this.chatVisible = !this.chatVisible;
+  }
 
   onSubmit(): void {
     this.message = '';

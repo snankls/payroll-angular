@@ -11,13 +11,11 @@
               <ng-select
                 [items]="monthYearOptions"
                 bindLabel="label"
-                bindValue="id"
-                name="month_year"
-                placeholder="Select one"
-                [searchable]="true"
+                bindValue="value"
                 [(ngModel)]="selectedMonthYear"
-                [ngModelOptions]="{standalone: true}"
-                (change)="onMonthSelect($event)"
+                [ngModelOptions]="{ standalone: true }"
+                placeholder="Select month"
+                [searchable]="true"
                 required>
               </ng-select>
             </div>

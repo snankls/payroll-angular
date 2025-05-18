@@ -78,6 +78,9 @@ export class AttendancesEditComponent {
       { id: 'Absent', name: 'Absent' },
       { id: 'Late', name: 'Late' },
       { id: 'Half Day', name: 'Half Day' },
+      { id: 'Leave', name: 'Leave' },
+      { id: 'Rest', name: 'Rest' },
+      { id: 'Holiday', name: 'Holiday' },
     ];
 
     // Handle id-based route

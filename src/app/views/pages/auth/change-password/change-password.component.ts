@@ -23,6 +23,7 @@ export class ChangePasswordComponent implements OnInit {
   message: string = '';
   messageType: string = '';
   token: string = '';
+  chatVisible = false;
 
   constructor(
     private http: HttpClient,
@@ -33,6 +34,10 @@ export class ChangePasswordComponent implements OnInit {
   ngOnInit(): void {
     // Get the token from the route
     this.token = this.route.snapshot.paramMap.get('token') || '';
+  }
+
+  toggleChat(): void {
+    this.chatVisible = !this.chatVisible;
   }
 
   onSubmit(): void {

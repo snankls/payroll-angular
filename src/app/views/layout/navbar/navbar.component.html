@@ -45,7 +45,7 @@
             <div class="text-center">
               <p class="tx-16 fw-bolder">{{ user?.full_name }}</p>
               <p class="fs-12px text-secondary">{{ user?.email }}</p>
-              <p class="tx-16 fw-bolder d-flex gap-2">
+              <p class="tx-16 fw-bolder d-flex gap-2" *ngIf="user?.pin_code">
                 <strong>Pin Code:</strong>
                 <span>{{ showPin ? user?.pin_code : '********' }}</span>
                 <i

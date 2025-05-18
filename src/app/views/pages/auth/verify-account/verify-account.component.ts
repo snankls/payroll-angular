@@ -14,8 +14,10 @@ import { environment } from '../../../../environments/environment';
 })
 export class VerifyAccountComponent implements OnInit {
   private API_URL = environment.API_URL;
+  
   verificationMessage: string = '';
   loading: boolean = true;
+  chatVisible = false;
 
   constructor(
     private route: ActivatedRoute,
@@ -33,6 +35,10 @@ export class VerifyAccountComponent implements OnInit {
       this.verificationMessage = 'Invalid or missing verification token.';
       this.loading = false;
     }
+  }
+
+  toggleChat(): void {
+    this.chatVisible = !this.chatVisible;
   }
 
   verifyAccount(token: string): void {
