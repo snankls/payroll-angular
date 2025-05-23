@@ -12,6 +12,7 @@ import { BreadcrumbComponent } from '../../../layout/breadcrumb/breadcrumb.compo
 interface Designation {
   id: number | null;
   name: string;
+  description: string;
   status: string | null;
   created_by_id?: number;
   created_by?: string;
@@ -39,7 +40,8 @@ export class JobTypesComponent implements OnInit {
   currentRecord: Designation = {
     id: null,
     name: '',
-    status: ''
+    description: '',
+    status: '',
   };
 
   status: { id: string; name: string }[] = [];
@@ -137,6 +139,7 @@ export class JobTypesComponent implements OnInit {
     this.currentRecord = {
       id: null,
       name: '',
+      description: '',
       status: null
     };
     this.activeModal = this.modalService.open(this.modalTemplate, { ariaLabelledBy: 'exampleModalLabel' });
@@ -191,6 +194,7 @@ export class JobTypesComponent implements OnInit {
     this.currentRecord = {
       id: null,
       name: '',
+      description: '',
       status: ''
     };
     this.formErrors = {};

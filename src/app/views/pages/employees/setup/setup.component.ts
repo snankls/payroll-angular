@@ -29,7 +29,7 @@ interface Employee {
   basic_salary: number;
   house_rent?: number;
   medical_allowances?: number;
-  petrol_allowances?: number;
+  transport_allowances?: number;
   total_salary: number;
   status: string | null;
   address: string;
@@ -78,7 +78,7 @@ export class EmployeesSetupComponent {
     basic_salary: 0,
     house_rent: 0,
     medical_allowances: 0,
-    petrol_allowances: 0,
+    transport_allowances: 0,
     total_salary: 0,
     status: null,
     address: '',
@@ -403,7 +403,7 @@ export class EmployeesSetupComponent {
     const basic = Number(this.currentRecord.basic_salary) || 0;
     const house = Number(this.currentRecord.house_rent) || 0;
     const medical = Number(this.currentRecord.medical_allowances) || 0;
-    const transport = Number(this.currentRecord.petrol_allowances) || 0;
+    const transport = Number(this.currentRecord.transport_allowances) || 0;
     
     this.currentRecord.total_salary = basic + house + medical + transport;
   }

@@ -51,6 +51,12 @@
               </ng-template>
             </ngx-datatable-column>
             
+            <ngx-datatable-column name="Description">
+              <ng-template ngx-datatable-cell-template let-row="row">
+                {{ row.description }}
+              </ng-template>
+            </ngx-datatable-column>
+            
             <ngx-datatable-column name="Status">
               <ng-template ngx-datatable-cell-template let-row="row">
                 <span
@@ -100,6 +106,14 @@
         <input type="text" class="form-control" name="name" [(ngModel)]="currentRecord.name" (input)="clearError('name')">
         <div class="text-danger mt-1" *ngIf="formErrors.name">
           {{ formErrors.name[0] }}
+        </div>
+      </div>
+    
+      <div class="mb-3">
+        <label class="form-label">Description</label>
+        <textarea class="form-control" name="description" [(ngModel)]="currentRecord.description" (input)="clearError('description')"></textarea>
+        <div class="text-danger mt-1" *ngIf="formErrors.description">
+          {{ formErrors.description[0] }}
         </div>
       </div>
     

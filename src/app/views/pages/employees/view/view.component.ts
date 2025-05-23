@@ -26,7 +26,7 @@ interface Employee {
   basic_salary: number;
   house_rent?: number;
   medical_allowances?: number;
-  petrol_allowances?: number;
+  transport_allowances?: number;
   total_salary: number;
   status: number | null;
   address: string;
@@ -76,7 +76,7 @@ export class EmployeesViewComponent {
     basic_salary: 0,
     house_rent: 0,
     medical_allowances: 0,
-    petrol_allowances: 0,
+    transport_allowances: 0,
     total_salary: 0,
     status: null,
     address: '',

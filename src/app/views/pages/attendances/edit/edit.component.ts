@@ -342,7 +342,7 @@ export class AttendancesEditComponent {
     this.isLoading = true;
 
     const payload = {
-      employee_id: this.currentRecord.employee?.id, // Get employee ID from current record
+      employee_id: this.currentRecord.employee?.id,
       status: this.currentRecord.status || 1,
       description: this.currentRecord.description || '',
       attendance_details: this.attendanceDetails.map(day => ({

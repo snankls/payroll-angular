@@ -9,7 +9,7 @@
           <div class="row">
             <!-- Personal Information -->
             <div class="col-md-3 mb-3">
-              <label class="form-label">Employee ID <span class="text-danger">*</span></label>
+              <label class="form-label">ID/Code <span class="text-danger">*</span></label>
               <input type="text" class="form-control" name="code" [(ngModel)]="currentRecord.code" (ngModelChange)="clearError('code')">
               <div class="text-danger mt-1" *ngIf="formErrors.code">{{ formErrors.code[0] }}</div>
             </div>
@@ -164,7 +164,7 @@
             </div>
         
             <div class="col-md-3 mb-3">
-              <label class="form-label">Bank Account</label>
+              <label class="form-label">Select Bank A/C</label>
               <ng-select
                 [items]="banks"
                 bindLabel="bank_label"
@@ -199,8 +199,8 @@
             
             <div class="col-md-3 mb-3">
               <label class="form-label">Transport Allowance</label>
-              <input type="number" class="form-control" [(ngModel)]="currentRecord.petrol_allowances" name="petrol_allowances" (change)="onSalaryChange()" (keyup)="onSalaryChange()" (ngModelChange)="clearError('petrol_allowances')">
-              <div class="text-danger mt-1" *ngIf="formErrors.petrol_allowances">{{ formErrors.petrol_allowances[0] }}</div>
+              <input type="number" class="form-control" [(ngModel)]="currentRecord.transport_allowances" name="transport_allowances" (change)="onSalaryChange()" (keyup)="onSalaryChange()" (ngModelChange)="clearError('transport_allowances')">
+              <div class="text-danger mt-1" *ngIf="formErrors.transport_allowances">{{ formErrors.transport_allowances[0] }}</div>
             </div>
         
             <div class="col-md-3 mb-3">

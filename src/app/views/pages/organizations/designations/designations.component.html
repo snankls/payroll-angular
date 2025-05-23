@@ -57,6 +57,12 @@
               </ng-template>
             </ngx-datatable-column>
             
+            <ngx-datatable-column name="Description">
+              <ng-template ngx-datatable-cell-template let-row="row">
+                {{ row.description }}
+              </ng-template>
+            </ngx-datatable-column>
+            
             <ngx-datatable-column name="Status">
               <ng-template ngx-datatable-cell-template let-row="row">
                 <span
@@ -102,7 +108,7 @@
   <div class="modal-body">
     <form class="forms-sample" (submit)="isEditMode ? updateRecord($event) : onSubmit($event)">
       <div class="mb-3">
-        <label class="form-label">Designation ID/Code <span class="text-danger">*</span></label>
+        <label class="form-label">ID/Code <span class="text-danger">*</span></label>
         <input type="text" class="form-control" name="code" [(ngModel)]="currentRecord.code" (input)="clearError('code')">
         <div class="text-danger mt-1" *ngIf="formErrors.code">
           {{ formErrors.code[0] }}
