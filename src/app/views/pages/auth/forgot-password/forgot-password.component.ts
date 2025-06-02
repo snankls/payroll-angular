@@ -1,11 +1,10 @@
 import { NgStyle } from '@angular/common';
 import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
+import { Router } from '@angular/router';
 import { HttpClient } from '@angular/common/http';
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { environment } from '../../../../environments/environment';
-import { AuthService } from '../../../../auth/auth.service';
 
 interface Authorisation {
   token: string;
@@ -33,7 +32,7 @@ interface LoginResponse {
   imports: [
     NgStyle,
     FormsModule,
-    CommonModule
+    CommonModule,
   ],
   templateUrl: './forgot-password.component.html',
   styleUrl: './forgot-password.component.scss'
@@ -49,15 +48,10 @@ export class ForgotPasswordComponent implements OnInit {
   loading: boolean = false;
   message: string = '';
   messageType: string = '';
-  chatVisible = false;
   
   constructor(private http: HttpClient, private router: Router) {}
 
   ngOnInit(): void { }
-
-  toggleChat(): void {
-    this.chatVisible = !this.chatVisible;
-  }
 
   onSubmit(): void {
     this.message = '';

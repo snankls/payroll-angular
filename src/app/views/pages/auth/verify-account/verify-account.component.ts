@@ -8,7 +8,10 @@ import { environment } from '../../../../environments/environment';
 @Component({
   selector: 'app-verify-account',
   standalone: true,
-  imports: [CommonModule, FormsModule],
+  imports: [
+    CommonModule,
+    FormsModule,
+  ],
   templateUrl: './verify-account.component.html',
   styleUrl: './verify-account.component.scss'
 })
@@ -17,7 +20,6 @@ export class VerifyAccountComponent implements OnInit {
   
   verificationMessage: string = '';
   loading: boolean = true;
-  chatVisible = false;
 
   constructor(
     private route: ActivatedRoute,
@@ -35,10 +37,6 @@ export class VerifyAccountComponent implements OnInit {
       this.verificationMessage = 'Invalid or missing verification token.';
       this.loading = false;
     }
-  }
-
-  toggleChat(): void {
-    this.chatVisible = !this.chatVisible;
   }
 
   verifyAccount(token: string): void {

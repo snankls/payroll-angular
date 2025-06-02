@@ -4,7 +4,7 @@ import { Router, RouterLink } from '@angular/router';
 import { NgbDropdownModule } from '@ng-bootstrap/ng-bootstrap';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { HttpClient } from '@angular/common/http';
-import { ThemeModeService } from '../../services/theme-mode.service';
+import { ThemeModeService } from '../../../core/services/theme-mode.service';
 import { AuthService } from '../../../auth/auth.service';
 import { environment } from '../../../environments/environment';
 import { catchError } from 'rxjs/operators';

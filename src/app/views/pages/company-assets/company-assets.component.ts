@@ -23,8 +23,6 @@ export class CompanyAssetsComponent {
   selected: { id: number; [key: string]: any }[] = [];
   rows: { id: number; [key: string]: any }[] = [];
   temp: { id: number; [key: string]: any }[] = [];
-  //rows = [];
-  //temp = [];
   loadingIndicator = true;
   reorderable = true;
   ColumnMode = ColumnMode;
@@ -38,21 +36,7 @@ export class CompanyAssetsComponent {
   ngOnInit(): void {
     this.fetchCompanyAssets();
   }
-
-  // updateFilter(event: KeyboardEvent) {
-  //   const val = (event.target as HTMLInputElement).value.toLocaleLowerCase();
-    
-  //   // filter our data
-  //   const temp = this.temp.filter(function(d: any) {
-  //     return d.employee_name.toLocaleLowerCase().indexOf(val) !== -1 || !val;
-  //   })
-
-  //   // update the rows
-  //   this.rows = temp;
-
-  //   // whenever the filter changes, always go back to the first page
-  //   this.table.offset = 0;
-  // }
+  
   updateFilter(event: KeyboardEvent) {
     const val = (event.target as HTMLInputElement).value.toLowerCase();
   

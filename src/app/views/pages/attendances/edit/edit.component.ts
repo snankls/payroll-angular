@@ -342,6 +342,7 @@ export class AttendancesEditComponent {
     this.isLoading = true;
 
     const payload = {
+      month_year: this.currentRecord.month_year,
       employee_id: this.currentRecord.employee?.id,
       status: this.currentRecord.status || 1,
       description: this.currentRecord.description || '',
@@ -354,6 +355,20 @@ export class AttendancesEditComponent {
         attendance_status: day.status
       }))
     };
+
+    // const payload = {
+    //   employee_id: this.currentRecord.employee?.id,
+    //   status: this.currentRecord.status || 1,
+    //   description: this.currentRecord.description || '',
+    //   attendance_details: this.attendanceDetails.map(day => ({
+    //     id: day.attendance_id || null,
+    //     attendance_date: this.formatNgbDateToYMD(day.attendance_date),
+    //     check_in: this.formatTime(day.check_in),
+    //     check_out: this.formatTime(day.check_out),
+    //     duration: day.duration,
+    //     attendance_status: day.status
+    //   }))
+    // };
 
     this.http.put(`${this.API_URL}/attendances/${this.currentRecord.id}`, payload).subscribe({
       next: (response) => {

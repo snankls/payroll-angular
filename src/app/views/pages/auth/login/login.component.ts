@@ -1,6 +1,6 @@
 import { NgStyle } from '@angular/common';
 import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
+import { Router } from '@angular/router';
 import { HttpClient } from '@angular/common/http';
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
@@ -33,7 +33,7 @@ interface LoginResponse {
   imports: [
     NgStyle,
     FormsModule,
-    CommonModule
+    CommonModule,
   ],
   templateUrl: './login.component.html',
   styleUrl: './login.component.scss'
@@ -44,7 +44,6 @@ export class LoginComponent implements OnInit {
   email: string = '';
   password: string = '';
   rememberMe: boolean = false;
-  chatVisible = false;
   errorMessage: string = '';
   loadingLogin: boolean = false;
   messageLogin: string = '';
@@ -60,11 +59,7 @@ export class LoginComponent implements OnInit {
 
   ngOnInit(): void {}
 
-  toggleChat(): void {
-    this.chatVisible = !this.chatVisible;
-  }
-
-  onSubmit(): void {
+  onLogin(event?: Event): void {
     const loginData = {
       email: this.email,
       password: this.password,
@@ -82,16 +77,28 @@ export class LoginComponent implements OnInit {
         if (response.data?.authorisation?.token) {
           this.messageLogin = 'Login successful!';
           this.messageTypeLogin = 'success';
+          
           this.authService.setToken(response.data.authorisation.token);
-
-          // Remember Me
+          
+          // Load current user info AFTER setting the token
+          this.authService.loadCurrentUser().subscribe({
+            next: (user) => {
+              // After user loaded, navigate to home or wherever you want
+              this.router.navigate(['/']);
+            },
+            error: (err) => {
+              console.error('Failed to load current user:', err);
+              // Still navigate or handle error
+              this.router.navigate(['/']);
+            }
+          });
+          
+          // Also store token in localStorage/sessionStorage as you do now
           if (this.rememberMe) {
             localStorage.setItem('token', response.data.authorisation.token);
           } else {
             sessionStorage.setItem('token', response.data.authorisation.token);
           }
-          
-          this.router.navigate(['/']);
         } else {
           this.messageLogin = 'Login failed. Please try again.';
           this.messageTypeLogin = 'error';
@@ -99,14 +106,12 @@ export class LoginComponent implements OnInit {
       },
       error: (error) => {
         this.loadingLogin = false;
-
         if (error.status === 403) {
           this.messageLogin = error.error?.error || 'Access denied.';
           this.contactInfo = error.error?.contact || '';
         } else {
           this.messageLogin = error.error?.message || 'Login failed. Please try again.';
         }
-
         this.messageTypeLogin = 'error';
       }
     });

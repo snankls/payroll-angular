@@ -37,7 +37,6 @@ export const routes: Routes = [
         path: 'dashboard',
         loadComponent: () => import('./views/pages/dashboard/dashboard.component').then(c => c.DashboardComponent),
         data: { title: 'Dashboard' },
-        canActivate: [AuthGuard]
       },
 
       // Companies
@@ -45,7 +44,6 @@ export const routes: Routes = [
         path: 'companies',
         loadComponent: () => import('./views/pages/companies/setup.component').then(c => c.CompaniesSetupComponent),
         data: { title: 'Companies' },
-        canActivate: [AuthGuard]
       },
 
       // Employees
@@ -53,7 +51,6 @@ export const routes: Routes = [
         path: 'employees',
         loadComponent: () => import('./views/pages/employees/employees.component').then(c => c.EmployeesComponent),
         data: { title: 'Employees' },
-        canActivate: [AuthGuard]
       },
 
       // Employees Add
@@ -61,7 +58,6 @@ export const routes: Routes = [
         path: 'employees/add',
         loadComponent: () => import('./views/pages/employees/setup/setup.component').then(c => c.EmployeesSetupComponent),
         data: { title: 'Employees Add' },
-        canActivate: [AuthGuard]
       },
 
       // Employees Edit
@@ -69,7 +65,6 @@ export const routes: Routes = [
         path: 'employees/edit/:id',
         loadComponent: () => import('./views/pages/employees/setup/setup.component').then(c => c.EmployeesSetupComponent),
         data: { title: 'Employees Edit' },
-        canActivate: [AuthGuard]
       },
 
       // Employees View
@@ -77,7 +72,6 @@ export const routes: Routes = [
         path: 'employees/view/:id',
         loadComponent: () => import('./views/pages/employees/view/view.component').then(c => c.EmployeesViewComponent),
         data: { title: 'Employees View' },
-        canActivate: [AuthGuard]
       },
 
       // Departments
@@ -85,7 +79,6 @@ export const routes: Routes = [
         path: 'organizations/departments',
         loadComponent: () => import('./views/pages/organizations/departments/departments.component').then(c => c.DepartmentsComponent),
         data: { title: 'Departments' },
-        canActivate: [AuthGuard]
       },
 
       // Designations
@@ -93,7 +86,6 @@ export const routes: Routes = [
         path: 'organizations/designations',
         loadComponent: () => import('./views/pages/organizations/designations/designations.component').then(c => c.DesignationsComponent),
         data: { title: 'Designations' },
-        canActivate: [AuthGuard]
       },
 
       // Job Types
@@ -101,7 +93,6 @@ export const routes: Routes = [
         path: 'organizations/job-types',
         loadComponent: () => import('./views/pages/organizations/job-types/job-types.component').then(c => c.JobTypesComponent),
         data: { title: 'Job Types' },
-        canActivate: [AuthGuard]
       },
 
       // Attendances
@@ -109,7 +100,6 @@ export const routes: Routes = [
         path: 'attendances',
         loadComponent: () => import('./views/pages/attendances/attendances.component').then(c => c.AttendancesComponent),
         data: { title: 'Attendances' },
-        canActivate: [AuthGuard]
       },
 
       // Attendances Add
@@ -117,7 +107,6 @@ export const routes: Routes = [
         path: 'attendances/add',
         loadComponent: () => import('./views/pages/attendances/add/add.component').then(c => c.AttendancesAddComponent),
         data: { title: 'Attendances Add' },
-        canActivate: [AuthGuard]
       },
 
       // Attendances Edit
@@ -125,7 +114,6 @@ export const routes: Routes = [
         path: 'attendances/edit/:id',
         loadComponent: () => import('./views/pages/attendances/edit/edit.component').then(c => c.AttendancesEditComponent),
         data: { title: 'Attendances Edit' },
-        canActivate: [AuthGuard]
       },
 
       // Attendances View
@@ -133,7 +121,6 @@ export const routes: Routes = [
         path: 'attendances/view/:id',
         loadComponent: () => import('./views/pages/attendances/view/view.component').then(c => c.AttendancesViewComponent),
         data: { title: 'Attendances View' },
-        canActivate: [AuthGuard]
       },
 
       // Leave Applications
@@ -141,7 +128,6 @@ export const routes: Routes = [
         path: 'leave-applications',
         loadComponent: () => import('./views/pages/leave-applications/leave-applications.component').then(c => c.LeaveApplicationsComponent),
         data: { title: 'Leave Applications' },
-        canActivate: [AuthGuard]
       },
 
       // Leave Types
@@ -149,7 +135,6 @@ export const routes: Routes = [
         path: 'leave-applications/leave-types',
         loadComponent: () => import('./views/pages/leave-applications/leave-types/leave-types.component').then(c => c.LeaveTypesComponent),
         data: { title: 'Leave Types' },
-        canActivate: [AuthGuard]
       },
 
       // Salary Wizards
@@ -157,7 +142,6 @@ export const routes: Routes = [
         path: 'salary-wizards',
         loadComponent: () => import('./views/pages/salary-wizards/salary-wizards.component').then(c => c.SalaryWizardsComponent),
         data: { title: 'Salary Wizards' },
-        canActivate: [AuthGuard]
       },
 
       // Reports
@@ -165,7 +149,6 @@ export const routes: Routes = [
         path: 'reports/salaries',
         loadComponent: () => import('./views/pages/reports/salaries/salaries.component').then(c => c.ReportsSalariesComponent),
         data: { title: 'Salaries Reports' },
-        canActivate: [AuthGuard]
       },
 
       // Company Assets
@@ -173,7 +156,6 @@ export const routes: Routes = [
         path: 'company-assets',
         loadComponent: () => import('./views/pages/company-assets/company-assets.component').then(c => c.CompanyAssetsComponent),
         data: { title: 'Company Assets' },
-        canActivate: [AuthGuard]
       },
 
       // Company Assets Add
@@ -181,7 +163,6 @@ export const routes: Routes = [
         path: 'company-assets/add',
         loadComponent: () => import('./views/pages/company-assets/setup/setup.component').then(c => c.CompanyAssetsSetupComponent),
         data: { title: 'Company Assets Add' },
-        canActivate: [AuthGuard]
       },
 
       // Company Assets Edit
@@ -189,7 +170,6 @@ export const routes: Routes = [
         path: 'company-assets/edit/:id',
         loadComponent: () => import('./views/pages/company-assets/setup/setup.component').then(c => c.CompanyAssetsSetupComponent),
         data: { title: 'Company Assets Edit' },
-        canActivate: [AuthGuard]
       },
 
       // Company Assets View
@@ -197,7 +177,6 @@ export const routes: Routes = [
         path: 'company-assets/view/:id',
         loadComponent: () => import('./views/pages/company-assets/view/view.component').then(c => c.CompanyAssetsViewComponent),
         data: { title: 'Company Assets View' },
-        canActivate: [AuthGuard]
       },
 
       // Assets Types
@@ -205,7 +184,6 @@ export const routes: Routes = [
         path: 'company-assets/asset-types',
         loadComponent: () => import('./views/pages/company-assets/asset-types/asset-types.component').then(c => c.AssetTypesComponent),
         data: { title: 'Asset Types' },
-        canActivate: [AuthGuard]
       },
 
       // Company Asset Returns
@@ -213,7 +191,6 @@ export const routes: Routes = [
         path: 'company-asset-returns',
         loadComponent: () => import('./views/pages/company-asset-returns/company-asset-returns.component').then(c => c.CompanyAssetRetunsComponent),
         data: { title: 'Company Asset Returns' },
-        canActivate: [AuthGuard]
       },
 
       // Company Asset Returns Add
@@ -221,7 +198,6 @@ export const routes: Routes = [
         path: 'company-asset-returns/add',
         loadComponent: () => import('./views/pages/company-asset-returns/setup/setup.component').then(c => c.CompanyAssetsSetupComponent),
         data: { title: 'Company Asset Returns Add' },
-        canActivate: [AuthGuard]
       },
 
       // Company Asset Returns Edit
@@ -229,7 +205,6 @@ export const routes: Routes = [
         path: 'company-asset-returns/edit/:id',
         loadComponent: () => import('./views/pages/company-asset-returns/setup/setup.component').then(c => c.CompanyAssetsSetupComponent),
         data: { title: 'Company Asset Returns Edit' },
-        canActivate: [AuthGuard]
       },
 
       // Company Asset Returns View
@@ -237,7 +212,6 @@ export const routes: Routes = [
         path: 'company-asset-returns/view/:id',
         loadComponent: () => import('./views/pages/company-asset-returns/view/view.component').then(c => c.CompanyAssetReturnsViewComponent),
         data: { title: 'Company Asset Returns View' },
-        canActivate: [AuthGuard]
       },
 
       // Loans
@@ -245,7 +219,6 @@ export const routes: Routes = [
         path: 'loans',
         loadComponent: () => import('./views/pages/loans/loans.component').then(c => c.LoansComponent),
         data: { title: 'Loans' },
-        canActivate: [AuthGuard]
       },
 
       // Loans Add
@@ -253,7 +226,6 @@ export const routes: Routes = [
         path: 'loans/add',
         loadComponent: () => import('./views/pages/loans/setup/setup.component').then(c => c.LoansSetupComponent),
         data: { title: 'Loans Add' },
-        canActivate: [AuthGuard]
       },
 
       // Loans Edit
@@ -261,7 +233,6 @@ export const routes: Routes = [
         path: 'loans/edit/:id',
         loadComponent: () => import('./views/pages/loans/setup/setup.component').then(c => c.LoansSetupComponent),
         data: { title: 'Loans Edit' },
-        canActivate: [AuthGuard]
       },
 
       // Loans View
@@ -269,7 +240,6 @@ export const routes: Routes = [
         path: 'loans/view/:id',
         loadComponent: () => import('./views/pages/loans/view/view.component').then(c => c.LoansViewComponent),
         data: { title: 'Loans View' },
-        canActivate: [AuthGuard]
       },
 
       // Banks A/C
@@ -277,7 +247,6 @@ export const routes: Routes = [
         path: 'banks',
         loadComponent: () => import('./views/pages/banks/banks.component').then(c => c.BanksComponent),
         data: { title: 'Banks' },
-        canActivate: [AuthGuard]
       },
 
       // Cities
@@ -285,7 +254,6 @@ export const routes: Routes = [
         path: 'cities',
         loadComponent: () => import('./views/pages/cities/cities.component').then(c => c.CitiesComponent),
         data: { title: 'Cities' },
-        canActivate: [AuthGuard]
       },
 
       // Users Edit
@@ -293,7 +261,6 @@ export const routes: Routes = [
         path: 'users/edit/:id',
         loadComponent: () => import('./views/pages/users/edit/edit.component').then(c => c.UsersEditComponent),
         data: { title: 'Users Edit' },
-        canActivate: [AuthGuard]
       },
 
       // User Profile
@@ -301,7 +268,6 @@ export const routes: Routes = [
         path: 'users/profile/:id',
         loadComponent: () => import('./views/pages/users/profile/profile.component').then(c => c.ProfileComponent),
         data: { title: 'User Profile' },
-        canActivate: [AuthGuard]
       },
 
       // Change Password
@@ -309,7 +275,6 @@ export const routes: Routes = [
         path: 'change-password',
         loadComponent: () => import('./views/pages/users/change-password/change-password.component').then(c => c.ChangePasswordComponent),
         data: { title: 'Change Password' },
-        canActivate: [AuthGuard]
       },
 
       // Support
@@ -317,7 +282,6 @@ export const routes: Routes = [
         path: 'support',
         loadComponent: () => import('./views/pages/support/support.component').then(c => c.SupportComponent),
         data: { title: 'Support' },
-        canActivate: [AuthGuard]
       },
 
       // Documentation
@@ -325,7 +289,6 @@ export const routes: Routes = [
         path: 'documentation',
         loadComponent: () => import('./views/pages/documentation/documentation.component').then(c => c.DocumentationComponent),
         data: { title: 'Documentation' },
-        canActivate: [AuthGuard]
       },
 
       // Payment Details
@@ -333,7 +296,6 @@ export const routes: Routes = [
         path: 'payment-details',
         loadComponent: () => import('./views/pages/payment-details/payment-details.component').then(c => c.PaymentDetailsComponent),
         data: { title: 'Payment Details' },
-        canActivate: [AuthGuard]
       },
 
       // 404 Page

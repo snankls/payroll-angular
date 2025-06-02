@@ -23,8 +23,6 @@ export class AttendancesComponent {
   selected: { id: number; [key: string]: any }[] = [];
   rows: { id: number; [key: string]: any }[] = [];
   temp: { id: number; [key: string]: any }[] = [];
-  //rows = [];
-  //temp = [];
   loadingIndicator = true;
   reorderable = true;
   ColumnMode = ColumnMode;

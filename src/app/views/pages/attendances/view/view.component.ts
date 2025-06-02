@@ -53,26 +53,6 @@ export class AttendancesViewComponent {
     description: '',
   };
 
-  // itemsList: {
-  //   id: number;
-  //   attendance_date: string;
-  //   check_in: string;
-  //   check_out: string;
-  //   duration: string;
-  //   attendance_status: string;
-  // }[] = [];
-
-//   itemsList: any[] = [];
-
-//   loading = false;
-// filteredItemsList: any[] = [];
-//   monthYearList: { id: string; label: string }[] = [];
-//   selectedMonthYear: string = '';
-
-//   rows: any[] = [];
-//   loadingIndicator = false;
-//   company_asset_status: string = '';
-
   itemsList: AttendanceDetail[] = [];
   filteredItemsList: AttendanceDetail[] = [];
   monthYearList: { id: string; label: string }[] = [];
@@ -188,31 +168,59 @@ export class AttendancesViewComponent {
   }
 
   // Add this to your component class
-  calculateTotalDuration(): string {
-    if (!this.filteredItemsList || this.filteredItemsList.length === 0) {
-      return '0h 0m';
-    }
-
-    let totalMinutes = 0;
-
-    this.filteredItemsList.forEach(item => {
-      // Parse duration string like "8h 30m"
-      const duration = item.duration || '0h 0m';
-      const [hours, minutes] = duration.split(/h\s*/).map(part => 
-        parseInt(part.replace(/[^\d]/g, '')) || 0
-      );
-      totalMinutes += hours * 60 + minutes;
-    });
-
-    const hours = Math.floor(totalMinutes / 60);
-    const minutes = totalMinutes % 60;
-    return `${hours}h ${minutes}m`;
+  // Calculate total duration in hours and minutes (for Total Duration)
+calculateTotalDuration(): string {
+  if (!this.filteredItemsList || this.filteredItemsList.length === 0) {
+    return '0h 0m';
   }
 
-  // Add this property to your component
-  get totalDuration(): string {
-    return this.calculateTotalDuration();
+  let totalMinutes = 0;
+
+  this.filteredItemsList.forEach(item => {
+    const duration = item.duration || '0h 0m';
+    const [hours, minutes] = duration.split(/h\s*/).map(part =>
+      parseInt(part.replace(/[^\d]/g, '')) || 0
+    );
+    totalMinutes += hours * 60 + minutes;
+  });
+
+  const hours = Math.floor(totalMinutes / 60);
+  const minutes = totalMinutes % 60;
+
+  return `${hours}h ${minutes}m`;
+}
+
+// Calculate total days for a specific status
+calculateTotalDaysByStatus(status: string): string {
+  if (!this.filteredItemsList || this.filteredItemsList.length === 0) {
+    return '0 days';
   }
+
+  const days = this.filteredItemsList.filter(item => item.attendance_status === status).length;
+  return `${days} days`;
+}
+
+// Computed properties
+get totalPresent(): string {
+  return this.calculateTotalDaysByStatus('Present');
+}
+
+get totalAbsent(): string {
+  return this.calculateTotalDaysByStatus('Absent');
+}
+
+get totalHalfDay(): string {
+  return this.calculateTotalDaysByStatus('Half Day');
+}
+
+get totalLeave(): string {
+  return this.calculateTotalDaysByStatus('Leave');
+}
+
+get totalDuration(): string {
+  return this.calculateTotalDuration();
+}
+
 
   generateMonthYearList(joiningDateStr: string, resignDateStr?: string | null) {
     const joiningDate = new Date(joiningDateStr);

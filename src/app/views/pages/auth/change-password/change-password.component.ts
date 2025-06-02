@@ -8,7 +8,10 @@ import { environment } from '../../../../environments/environment';
 @Component({
   selector: 'app-change-password',
   standalone: true,
-  imports: [CommonModule, FormsModule],
+  imports: [
+    CommonModule,
+    FormsModule,
+  ],
   templateUrl: './change-password.component.html',
   styleUrl: './change-password.component.scss'
 })
@@ -23,7 +26,6 @@ export class ChangePasswordComponent implements OnInit {
   message: string = '';
   messageType: string = '';
   token: string = '';
-  chatVisible = false;
 
   constructor(
     private http: HttpClient,
@@ -34,10 +36,6 @@ export class ChangePasswordComponent implements OnInit {
   ngOnInit(): void {
     // Get the token from the route
     this.token = this.route.snapshot.paramMap.get('token') || '';
-  }
-
-  toggleChat(): void {
-    this.chatVisible = !this.chatVisible;
   }
 
   onSubmit(): void {
