@@ -79,3 +79,32 @@ label.form-label,
     height: auto;
   }
 }
+
+.email-list-item {
+  position: relative;
+}
+
+.trash-icon {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  display: none;
+  color: #000;
+  font-size: 20px;
+  background: #e4e7ec;
+  width: 100px;
+  text-align: right;
+}
+
+.email-list-item:hover .trash-icon {
+  display: inline-block;
+  background: #e4e7ec;
+}
+
+.trash-icon i {
+  color: #000;
+}
+
+.trash-icon i:hover {
+  color: #dc3545;
+}

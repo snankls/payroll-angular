@@ -4,8 +4,8 @@ import { FormsModule } from '@angular/forms';
 import { ColumnMode, NgxDatatableModule } from '@siemens/ngx-datatable';
 import { NgSelectModule } from '@ng-select/ng-select';
 import { CommonModule } from '@angular/common';
-import { environment } from '../../../../environments/environment';
-import { BreadcrumbComponent } from '../../../layout/breadcrumb/breadcrumb.component';
+import { environment } from '../../../../../environments/environment';
+import { BreadcrumbComponent } from '../../../../layout/breadcrumb/breadcrumb.component';
 
 @Component({
   selector: 'app-salaries',

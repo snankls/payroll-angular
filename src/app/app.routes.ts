@@ -146,9 +146,14 @@ export const routes: Routes = [
 
       // Reports
       {
-        path: 'reports/salaries',
-        loadComponent: () => import('./views/pages/reports/salaries/salaries.component').then(c => c.ReportsSalariesComponent),
-        data: { title: 'Salaries Reports' },
+        path: 'reports/employees/card',
+        loadComponent: () => import('./views/pages/reports/employees/cards/cards.component').then(c => c.ReportsCardsComponent),
+        data: { title: 'Employee Cards' },
+      },
+      {
+        path: 'reports/employees/salaries',
+        loadComponent: () => import('./views/pages/reports/employees/salaries/salaries.component').then(c => c.ReportsSalariesComponent),
+        data: { title: 'Employee Salaries' },
       },
 
       // Company Assets

@@ -75,8 +75,17 @@ export const MENU: MenuItem[] = [
     icon: 'file-text',
     subItems: [
       {
-        label: 'Salaries',
-        link: '/reports/salaries',
+        label: 'Employees',
+        subItems: [
+          {
+            label: 'Card',
+            link: '/reports/employees/card'
+          },
+          {
+            label: 'Salaries',
+            link: '/reports/employees/salaries'
+          },
+        ]
       },
     ]
   },
